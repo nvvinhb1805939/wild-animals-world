@@ -1,0 +1,52 @@
+@use './variables' as vars;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif !important;
+  transition: all 0.25s ease-in-out;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  object-fit: cover;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+li {
+  list-style-type: none;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  $background: vars.$foreground-color;
+  $size: 6px;
+
+  width: $size;
+
+  &-track {
+    border-radius: $size;
+  }
+
+  &-thumb {
+    background: vars.$primary-color;
+    border-radius: $size;
+
+    &:hover {
+      background: vars.$secondary-color;
+    }
+  }
+}

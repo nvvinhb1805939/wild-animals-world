@@ -1,0 +1,21 @@
+@use '../../assets/scss/variables' as vars;
+
+.logo {
+  position: relative;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: vars.$primary-color;
+
+  &::after {
+    $size: 2px;
+
+    content: '';
+    position: absolute;
+    left: calc($size * -1);
+    right: calc($size * -1);
+    bottom: calc($size * -1);
+
+    height: calc($size);
+    background-color: currentColor;
+  }
+}

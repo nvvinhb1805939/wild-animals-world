@@ -1,0 +1,22 @@
+/*****************HEADER*****************/
+$header-height: 4rem;
+/*****************COLORS*****************/
+$primary-color: #05a081;
+$secondary-color: #0064f9;
+$background-color: #232a34;
+$foreground-color: #fff;
+/*****************SPACING*****************/
+$small-gap: 1rem;
+$regular-gap: 1.5rem;
+$large-gap: 2rem;
+$largest-gap: 6.875rem;
+/*****************SHADOWS*****************/
+$primary-shadow: 0 0 2px 2px rgb(0 0 0 / 10%);
+
+:export {
+  primary: $primary-color;
+  secondary: $secondary-color;
+  background: $background-color;
+  foreground: $foreground-color;
+  primaryShadow: $primary-shadow;
+}

@@ -1,0 +1,22 @@
+@use '../../assets/scss/variables' as vars;
+
+.footer {
+  padding-block: vars.$large-gap;
+  text-align: center;
+  box-shadow: vars.$primary-shadow;
+
+  &__contact {
+    padding-block: vars.$large-gap;
+    margin-block: vars.$large-gap;
+    border-top: 1px solid rgba($color: vars.$background-color, $alpha: 0.25);
+    border-bottom: 0.25px solid rgba($color: vars.$background-color, $alpha: 0.25);
+
+    &-item:not(:first-of-type) {
+      margin-top: vars.$small-gap;
+    }
+  }
+
+  &__link:hover {
+    color: vars.$primary-color;
+  }
+}

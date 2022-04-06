@@ -1,0 +1,11 @@
+@use '../../../../assets/scss/variables' as vars;
+.content {
+  &__list {
+    box-shadow: vars.$primary-shadow;
+    border-radius: 5px;
+  }
+
+  &__item {
+    line-height: 1.6;
+  }
+}

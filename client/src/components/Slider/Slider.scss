@@ -1,0 +1,61 @@
+@use '../../assets/scss/variables' as vars;
+
+.slider {
+  margin-top: vars.$header-height;
+
+  &--secondary {
+    margin-top: 0;
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// SWIPER
+.swiper {
+  padding-bottom: vars.$large-gap;
+
+  &-slide {
+    width: 275px !important;
+    aspect-ratio: 125/92;
+  }
+
+  &-button-prev,
+  &-button-next {
+    color: vars.$primary-color;
+  }
+
+  &-button-prev::after,
+  &-button-next::after {
+    font-family: 'Material Icons' !important;
+    -webkit-font-feature-settings: 'liga' 1;
+    -moz-font-feature-settings: 'liga' 1;
+    font-feature-settings: 'liga' 1;
+  }
+
+  &-button-prev::after {
+    content: 'keyboard_arrow_left';
+  }
+
+  &-button-next::after {
+    content: 'keyboard_arrow_right';
+  }
+
+  &-pagination {
+    bottom: 0 !important;
+  }
+
+  &-pagination-bullet {
+    width: 25px;
+    height: 5px;
+    border-radius: 5px;
+  }
+
+  &-pagination-bullet:hover,
+  &-pagination-bullet-active {
+    background-color: vars.$primary-color;
+    opacity: 1;
+  }
+}
