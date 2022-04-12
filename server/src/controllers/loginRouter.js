@@ -1,26 +1,32 @@
-const express = require('express')
-const connection = require('../config/connectDB')
-const router = express.Router()
+const express = require('express');
+const connection = require('../config/connectDB');
+const router = express.Router();
 
-router.post('/login', (req,res)=>{
-    const {username, password} = req.body;
-    let query = `select username, password from users`;
-    connection.query(query, (err, result)=>{
-        if(err) return res.status(400).json({success: false, message: 'connection fail'});
-        
-        if(username == ''){
-            return res.status(200).json({success: true, message: 'account cannot be empty'})
-        } else if(password == ''){
-            return res.status(200).json({success: true, message: 'password cannot be empty'})
-        }else if(username != result[0].username){
-            return res.status(200).json({success: true, message: 'account does not exist'})
-        }else if(password != result[0].password){
-            return res.status(200).json({success: true, message: 'password does not exist'})
-        }else if(username==result[0].username && password == result[0].password){
-            return res.status(200).json({success: true, message: 'login success'})
-        }
-    })
-})
+router.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 
+router.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  let query = `select * from users`;
+
+  connection.query(query, (err, result) => {
+    if (err) return res.status(400).json({ success: false, message: 'connection fail' });
+
+    const user = result.find(resultItem => username === resultItem.username && password === resultItem.password);
+
+    if (!user) {
+      return res.status(200).json({ success: true, message: 'Sai tên tài khoản hoặc mật khẩu' });
+    } else {
+      return res.status(200).json({
+        success: true,
+        message: 'Đăng nhập thành công',
+        user: { ...user, password: '**************' },
+      });
+    }
+  });
+});
 
 module.exports = router;
