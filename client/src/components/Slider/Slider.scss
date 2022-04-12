@@ -1,8 +1,6 @@
 @use '../../assets/scss/variables' as vars;
 
 .slider {
-  margin-top: vars.$header-height;
-
   &--secondary {
     margin-top: 0;
   }

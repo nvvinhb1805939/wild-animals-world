@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-BirdItem.propTypes = {
+AnimalItem.propTypes = {
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   src: PropTypes.string.isRequired,
 };
 
-function BirdItem({ id, name, src }) {
+function AnimalItem({ id, name, src }) {
   const toSpinalCase = param => {
     return param
       .replace(/([A-Z])/g, ' $1')
@@ -29,4 +29,4 @@ function BirdItem({ id, name, src }) {
   );
 }
 
-export default BirdItem;
+export default AnimalItem;

@@ -30,7 +30,7 @@ function Footer(props) {
             </li>
           </ul>
         </div>
-        <div className='footer__copyright'>© .bird - Nền tảng tra cứu thông tin các loài chim</div>
+        <div className='footer__copyright'>© .waw - Nền tảng tra cứu thông tin các loài động vật hoang dã</div>
       </Container>
     </footer>
   );

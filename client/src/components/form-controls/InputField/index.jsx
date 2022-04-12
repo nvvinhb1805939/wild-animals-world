@@ -1,34 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Controller } from 'react-hook-form';
-import { Input, IconButton, InputAdornment } from '@mui/material';
+import { TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
 InputField.propTypes = {
   control: PropTypes.object.isRequired,
   name: PropTypes.string.isRequired,
-  onIconClick: PropTypes.func,
+  label: PropTypes.string.isRequired,
+  required: PropTypes.bool,
 };
-InputField.defaultProps = { onIconClick: null };
+InputField.defaultProps = {
+  required: false,
+};
 
-function InputField({ control, name, onIconClick }) {
+function InputField({ control, name, label, required }) {
   return (
     <Controller
       control={control}
       name={name}
       render={({ field: { onChange } }) => (
-        <Input
-          onChange={event => onChange(event.target.value)}
-          startAdornment={
-            <InputAdornment position='start'>
-              <IconButton aria-label='search bird' edge='start' onClick={onIconClick}>
-                <SearchIcon />
-              </IconButton>
-            </InputAdornment>
-          }
-          placeholder='Tìm kiếm'
-          fullWidth
-        />
+        <TextField id={name} name={name} label={label} onChange={onChange} required={required} size='small' fullWidth />
       )}
     />
   );

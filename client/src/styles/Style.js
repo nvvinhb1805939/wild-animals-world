@@ -35,13 +35,13 @@ const theme = createTheme({
           boxShadow: 'none',
           cursor: 'pointer',
           outline: 'none',
+          backfaceVisibility: 'hidden',
 
           '&::before': {
             content: '""',
             position: 'absolute',
             inset: 0,
             zIndex: -1,
-
             borderRadius: 'inherit',
           },
 

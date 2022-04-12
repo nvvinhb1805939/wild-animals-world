@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import NotFound from '../../components/NotFound';
-import './BirdFeature.scss';
-import MainPage from './pages/MainPage';
+import { fetchAnimals } from './animalsSlice';
 import DetailPage from './pages/DetailPage';
+import MainPage from './pages/MainPage';
 
-BirdFeature.propTypes = {};
+AnimalsFeature.propTypes = {};
 
-function BirdFeature(props) {
+function AnimalsFeature(props) {
+  const dispatch = useDispatch();
+
   return (
     <Routes>
       <Route path='/' element={<MainPage />} />
@@ -17,4 +20,4 @@ function BirdFeature(props) {
   );
 }
 
-export default BirdFeature;
+export default AnimalsFeature;

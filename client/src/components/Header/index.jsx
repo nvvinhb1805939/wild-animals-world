@@ -3,6 +3,9 @@ import React from 'react';
 import Logo from '../Logo';
 import Search from '../Search';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Avatar } from '@mui/material';
 
 Header.propTypes = {
   color: PropTypes.string,
@@ -12,6 +15,9 @@ Header.defaultProps = {
 };
 
 function Header({ color }) {
+  const user = useSelector(state => state.user);
+  const userData = user.data?.user || {};
+  console.log(userData);
   return (
     <AppBar color={color}>
       <Container>
@@ -20,9 +26,13 @@ function Header({ color }) {
           <div style={{ flexBasis: '50%' }}>
             <Search />
           </div>
-          <Button size='medium' variant='contained' color='primary'>
-            Đăng nhập
-          </Button>
+          {Object.keys(userData).length === 0 ? (
+            <Button size='medium' variant='contained' color='primary'>
+              <Link to='authencation'>Đăng nhập</Link>
+            </Button>
+          ) : (
+            <Avatar />
+          )}
         </Toolbar>
       </Container>
     </AppBar>

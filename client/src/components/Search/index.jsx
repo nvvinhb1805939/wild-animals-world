@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
-import InputField from '../form-controls/InputField';
+import SearchField from '../form-controls/SearchField';
 
 Search.propTypes = {};
 
 function Search(props) {
   const { handleSubmit, control } = useForm({
     defaultValues: {
-      bird: '',
+      animals: '',
     },
   });
 
@@ -16,7 +16,7 @@ function Search(props) {
 
   return (
     <form onSubmit={handleSubmit(handleOnSubmit)}>
-      <InputField control={control} name='bird' onIconClick={handleSubmit(handleOnSubmit)} />
+      <SearchField control={control} name='animals' />
     </form>
   );
 }

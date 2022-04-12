@@ -1,5 +1,6 @@
 import { Container, Grid, List, ListItem, Typography } from '@mui/material';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Slider from '../../../../components/Slider';
 import { BIRD_IMAGES } from '../../../../constant/images';
 import './Content.scss';
@@ -7,6 +8,44 @@ import './Content.scss';
 Content.propTypes = {};
 
 function Content(props) {
+  const animals = useSelector(state => state.animals);
+
+  // const BIRD = {
+  //   sciencetificName: 'Ichthyophis nguyenorum Nishikawa, Matsui, and Orlov, 2012',
+  //   vietnameseName: 'Ếch giun nguyễn',
+  //   localName: 'Rắn trun đĩa',
+  //   regnum: 'Động vật (Animalia)',
+  //   phylum: 'Động vật có dây sống (chordata)',
+  //   class: 'AMPHIBIA (Linnaeus, 1758)',
+  //   ordo: 'GYMNOPHIONA (Muller, 1832)',
+  //   familia: 'Ichthyophiidae Taylor, 1968',
+  //   images: BIRD_IMAGES,
+  //   morphologicalCharacteristic: `
+  //       Đặc điểm chẩn loại: cơ thể tròn, dẹt mặt bụng; chóp đuôi cùn, không có dạng mũ; không có đốm màu vàng mặt bụng; đầu rộng nhất ở góc mép miệng, hẹp dần về trước; mút mõm tròn; lỗ mũi nằm gần bờ trước mép miệng; số vòng quanh thân: 312 – 318; sọc vàng rộng chạy liên tục từ sau mắt đến huyệt (Nishikawa et al.,2012).
+  //       Đặc điểm hình thái: SVL 201,3 mm. Dài đuôi: 2,6 – 3,5; rộng đuôi: 2,8 – 3,5. Rộng đầu (HW: 6,6). Dài đầu hơn rộng đầu (HL/HW: 1,25-1,47). Cơ thể hơi tròn, dài, dạng rắn. Đầu dẹp, láng; rộng nhất ở mép miệng, hẹo về phía đầu. Mút mõm tròn; dài mõm bằng với ngang đầu ở vị trí mắt. Mắt nhỏ, không mi mắt, có một đôi râu (tentacle) ngắn nằm phía trước mắt. Hai bên thân có sọc  màu vàng bắt đầu từ sau mép miệng đến lỗ huyệt. Số nếp gấp quanh thân: 280 – 300; ở đuôi: 7-8. Đuôi ngắn hơi dẹt ở mặt bụng, phần đỉnh cùn, không có đốm màu cam hay vàng  ở mặt bụng. Mặt lưng có màu tím đen, bụng màu hoa cà nhạt, hai bên sườn có sọc màu vàng liên tục, không đứt quãng, chạy từ khoảng giữa hàm trên (mấu xúc - tu) đến gần mút đuôi. Mắt có viền mỏng màu trắng đục.
+  //       Ghi chú:  Loài Ichthyophis bannanicus phân biệt với Ichthyophis nguyenorum dựa trên các đặc điểm: số nếp vòng quanh cơ thể của I. nguyenorum (312 – 318) ít hơn so với I. bannanicus (340); sọc bên thân của I. nguyenorum kéo dài đến mút đuôi so với sọc bị đứt quãng ở phía sau đuôi của I. bannanicus Nishikawa et al. (2012).`,
+  //   ecologicalCharacteristic:
+  //     'Sống ở các vực nước (ao, vũng...) có nhiều bùn và lá mục, hay các khu vực đất nông nghiệp. Thức ăn gồm côn trùng, giun đất, nhện và những loài không xương sống nhỏ khác.',
+  //   usageValue: 'Chưa xác định',
+  //   IUCN: 'LC (Least concern)',
+  //   redBook: 'Sắp nguy cấp',
+  //   goverment: 'Không nằm trong danh mục bảo tồn',
+  //   CITES: 'Không có trong danh mục',
+  //   allocation: 'Phổ biến',
+  //   coordinates: [
+  //     '9.571639 N, 105.748757 E ',
+  //     '9.563858 N, 105.742898 E',
+  //     '9.572843 N, 105.745688 E',
+  //     '9.571639 N, 105.748757 E',
+  //     '9.571639 N, 105.748757 E',
+  //   ],
+  //   templateStatus: 'Thu được mẫu',
+  //   habitat: 'Rừng tràm đặc dụng,  rừng tràm trồng',
+  //   address: 'Rừng Tràm Mỹ Phước, Mỹ Phước, Mỹ Tú, Sóc Trăng',
+  //   date: '4/13/2018',
+  //   author: 'Nguyễn Quang Cường',
+  // };
+
   const BIRD = {
     sciencetificName: 'Ichthyophis nguyenorum Nishikawa, Matsui, and Orlov, 2012',
     vietnameseName: 'Ếch giun nguyễn',

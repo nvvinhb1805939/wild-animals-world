@@ -15,6 +15,11 @@ html {
   scroll-behavior: smooth;
 }
 
+main {
+  padding-block: vars.$large-gap;
+  margin-top: vars.$header-height;
+}
+
 img {
   display: block;
   max-width: 100%;

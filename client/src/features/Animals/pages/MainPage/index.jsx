@@ -1,7 +1,7 @@
 import React from 'react';
 import AlphaSearch from '../../../../components/AlphaSearch';
 import Slider from '../../../../components/Slider';
-import BirdList from '../../components/BirdList';
+import AnimalsList from '../../components/AnimalsList';
 import IMAGES from '../../../../constant/images';
 
 MainPage.propTypes = {};
@@ -11,7 +11,7 @@ function MainPage(props) {
     <main>
       <Slider images={IMAGES} paddingY={4} />
       <AlphaSearch />
-      <BirdList />
+      <AnimalsList />
     </main>
   );
 }

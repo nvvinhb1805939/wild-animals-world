@@ -2,7 +2,8 @@ import { ThemeProvider } from '@emotion/react';
 import { Route, Routes } from 'react-router-dom';
 import Footer from './components/Footer';
 import Header from './components/Header';
-import BirdFeature from './features/BirdFeature';
+import AnimalsFeature from './features/Animals';
+import AuthFeature from './features/Auth';
 import theme from './styles/Style';
 
 function App() {
@@ -11,7 +12,8 @@ function App() {
       <Header />
 
       <Routes>
-        <Route path='*' element={<BirdFeature />} />
+        <Route path='*' element={<AnimalsFeature />} />
+        <Route path='authencation/*' element={<AuthFeature />} />
       </Routes>
 
       <Footer />
