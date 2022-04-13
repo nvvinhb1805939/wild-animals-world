@@ -13,7 +13,7 @@ function App() {
 
       <Routes>
         <Route path='*' element={<AnimalsFeature />} />
-        <Route path='authencation/*' element={<AuthFeature />} />
+        <Route path='login/*' element={<AuthFeature />} />
       </Routes>
 
       <Footer />

@@ -15,14 +15,14 @@ import PasswordField from '../../../../components/form-controls/PasswordField';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-Login.propTypes = {
+LoginForm.propTypes = {
   onSubmit: PropTypes.func,
 };
-Login.defaultProps = {
+LoginForm.defaultProps = {
   onSubmit: null,
 };
 
-export default function Login({ onSubmit }) {
+export default function LoginForm({ onSubmit }) {
   const handleOnSubmit = data => {
     if (onSubmit) onSubmit(data);
   };

@@ -4,7 +4,7 @@ import { Box } from '@mui/system';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Logo from '../Logo';
 import Search from '../Search';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
@@ -51,8 +51,8 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 function Header({ color }) {
+  const location = useLocation();
   const dispatch = useDispatch();
-
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const user = useSelector(state => state.user);
@@ -80,7 +80,9 @@ function Header({ color }) {
           </div>
           {Object.keys(userData).length === 0 ? (
             <Button size='medium' variant='contained' color='primary'>
-              <Link to='authencation'>Đăng nhập</Link>
+              <Link to='login' state={{ prevPath: location.pathname }}>
+                Đăng nhập
+              </Link>
             </Button>
           ) : (
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
