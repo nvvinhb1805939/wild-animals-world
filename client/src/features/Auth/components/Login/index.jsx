@@ -13,6 +13,7 @@ import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import PasswordField from '../../../../components/form-controls/PasswordField';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 Login.propTypes = {
   onSubmit: PropTypes.func,
@@ -28,6 +29,9 @@ export default function Login({ onSubmit }) {
 
   const { formState, handleSubmit, control } = useForm();
 
+  const response = useSelector(state => state.user);
+  // console.log({ response });
+
   return (
     <Container component='section' maxWidth='xs'>
       <Box
@@ -41,7 +45,7 @@ export default function Login({ onSubmit }) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component='h1' variant='h5' sx={{ mb: 1, fontWeight: 500, color: 'primary.main' }}>
-          Login
+          Đăng Nhập
         </Typography>
         <Box component='form' onSubmit={handleSubmit(handleOnSubmit)} sx={{ mt: 1 }}>
           <Grid container spacing={3}>
@@ -53,7 +57,7 @@ export default function Login({ onSubmit }) {
             </Grid>
             <Grid item lg={12}>
               <Button type='submit' fullWidth variant='contained'>
-                Login
+                Đăng nhập
               </Button>
             </Grid>
           </Grid>
