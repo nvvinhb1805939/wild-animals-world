@@ -1,18 +1,14 @@
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 
-// Option 2: Passing a connection URI
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'animalsplanet',
-});
+const config = {
+  port: process.env.DB_PORT,
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.MYSQL_DB,
+  connectionLimit: 50,
+};
 
-connection.connect(function (err) {
-  if (err) {
-    console.log({ err });
-  }
-  console.log('Database is connected successfully!');
-});
+const pool = mysql.createPool(config);
 
-module.exports = connection;
+module.exports = pool;
