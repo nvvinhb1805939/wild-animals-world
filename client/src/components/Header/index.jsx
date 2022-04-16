@@ -1,15 +1,15 @@
-import { AppBar, Avatar, Badge, Button, Container, Divider, IconButton, Menu, MenuItem, Toolbar } from '@mui/material';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
+import { AppBar, Avatar, Badge, Button, Container, IconButton, Menu, MenuItem, Toolbar } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Box } from '@mui/system';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { logout } from '../../features/Auth/userSlice';
 import Logo from '../Logo';
 import Search from '../Search';
-import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import { logout } from '../../features/Auth/userSlice';
 
 Header.propTypes = {
   color: PropTypes.string,
@@ -51,13 +51,12 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 function Header({ color }) {
-  const location = useLocation();
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const user = useSelector(state => state.user);
-  const userData = user.data?.user || {};
-  // console.log(userData);
+  const userData = user.data || {};
+  // console.log(user, userData);
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -80,9 +79,7 @@ function Header({ color }) {
           </div>
           {Object.keys(userData).length === 0 ? (
             <Button size='medium' variant='contained' color='primary'>
-              <Link to='login' state={{ prevPath: location.pathname }}>
-                Đăng nhập
-              </Link>
+              <Link to='login'>Đăng nhập</Link>
             </Button>
           ) : (
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -98,7 +95,7 @@ function Header({ color }) {
                   anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                   variant='dot'
                 >
-                  <Avatar alt={userData.fullname} src={userData.avt} />
+                  <Avatar alt={userData.fullname} src={userData.avatar} />
                 </StyledBadge>
               </IconButton>
               <Menu

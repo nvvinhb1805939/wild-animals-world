@@ -50,7 +50,7 @@ export default function LoginForm({ onSubmit }) {
         <Box component='form' onSubmit={handleSubmit(handleOnSubmit)} sx={{ mt: 1 }}>
           <Grid container spacing={3}>
             <Grid item lg={12}>
-              <InputField control={control} name='username' label='Tên đăng nhập' />
+              <InputField control={control} name='userName' label='Tên đăng nhập' />
             </Grid>
             <Grid item lg={12}>
               <PasswordField control={control} name='password' label='Mật khẩu' />

@@ -1,27 +1,29 @@
-import React from 'react';
+import { unwrapResult } from '@reduxjs/toolkit';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import LoginForm from '../../components/LoginForm';
-import { useDispatch } from 'react-redux';
 import { login } from '../../userSlice';
-import { unwrapResult } from '@reduxjs/toolkit';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 LoginPage.propTypes = {};
 
 function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
+  const [isLoginSuccess, setIsLoginSuccess] = useState(() => JSON.parse(localStorage.getItem('loginStatus')) || false);
+
+  useEffect(() => {
+    if (isLoginSuccess) navigate(-1);
+  }, [isLoginSuccess]);
 
   const handleOnSubmit = async data => {
     const response = await dispatch(login(data));
     const userData = unwrapResult(response);
-    const isLoginedSuccess = !!userData.user?.idUser;
-    const prevPath = location.state?.prevPath;
+    const hasData = !!userData?.user_ID;
 
-    if (!isLoginedSuccess) return;
-    if (prevPath === '/login' || !prevPath) navigate('/');
-    else navigate(prevPath);
+    setIsLoginSuccess(hasData);
+    localStorage.setItem('loginStatus', JSON.stringify(hasData));
   };
 
   return (

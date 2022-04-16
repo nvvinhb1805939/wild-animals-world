@@ -52,15 +52,15 @@ function Content(props) {
     localName: 'Rắn trun đĩa',
     regnum: 'Động vật (Animalia)',
     phylum: 'Động vật có dây sống (chordata)',
-    class: 'AMPHIBIA (Linnaeus, 1758)',
+    animalClass: 'AMPHIBIA (Linnaeus, 1758)',
     ordo: 'GYMNOPHIONA (Muller, 1832)',
     familia: 'Ichthyophiidae Taylor, 1968',
     images: BIRD_IMAGES,
-    morphologicalCharacteristic: `
+    morphological: `
         Đặc điểm chẩn loại: cơ thể tròn, dẹt mặt bụng; chóp đuôi cùn, không có dạng mũ; không có đốm màu vàng mặt bụng; đầu rộng nhất ở góc mép miệng, hẹp dần về trước; mút mõm tròn; lỗ mũi nằm gần bờ trước mép miệng; số vòng quanh thân: 312 – 318; sọc vàng rộng chạy liên tục từ sau mắt đến huyệt (Nishikawa et al.,2012). 
         Đặc điểm hình thái: SVL 201,3 mm. Dài đuôi: 2,6 – 3,5; rộng đuôi: 2,8 – 3,5. Rộng đầu (HW: 6,6). Dài đầu hơn rộng đầu (HL/HW: 1,25-1,47). Cơ thể hơi tròn, dài, dạng rắn. Đầu dẹp, láng; rộng nhất ở mép miệng, hẹo về phía đầu. Mút mõm tròn; dài mõm bằng với ngang đầu ở vị trí mắt. Mắt nhỏ, không mi mắt, có một đôi râu (tentacle) ngắn nằm phía trước mắt. Hai bên thân có sọc  màu vàng bắt đầu từ sau mép miệng đến lỗ huyệt. Số nếp gấp quanh thân: 280 – 300; ở đuôi: 7-8. Đuôi ngắn hơi dẹt ở mặt bụng, phần đỉnh cùn, không có đốm màu cam hay vàng  ở mặt bụng. Mặt lưng có màu tím đen, bụng màu hoa cà nhạt, hai bên sườn có sọc màu vàng liên tục, không đứt quãng, chạy từ khoảng giữa hàm trên (mấu xúc - tu) đến gần mút đuôi. Mắt có viền mỏng màu trắng đục.
         Ghi chú:  Loài Ichthyophis bannanicus phân biệt với Ichthyophis nguyenorum dựa trên các đặc điểm: số nếp vòng quanh cơ thể của I. nguyenorum (312 – 318) ít hơn so với I. bannanicus (340); sọc bên thân của I. nguyenorum kéo dài đến mút đuôi so với sọc bị đứt quãng ở phía sau đuôi của I. bannanicus Nishikawa et al. (2012).`,
-    ecologicalCharacteristic:
+    ecological:
       'Sống ở các vực nước (ao, vũng...) có nhiều bùn và lá mục, hay các khu vực đất nông nghiệp. Thức ăn gồm côn trùng, giun đất, nhện và những loài không xương sống nhỏ khác.',
     usageValue: 'Chưa xác định',
     IUCN: 'LC (Least concern)',
@@ -78,7 +78,7 @@ function Content(props) {
     templateStatus: 'Thu được mẫu',
     habitat: 'Rừng tràm đặc dụng,  rừng tràm trồng',
     address: 'Rừng Tràm Mỹ Phước, Mỹ Phước, Mỹ Tú, Sóc Trăng',
-    date: '4/13/2018',
+    postDate: '4/13/2018',
     author: 'Nguyễn Quang Cường',
   };
 
