@@ -61,6 +61,7 @@ module.exports = {
         `SELECT image_ID, CONCAT('${process.env.URL}', url) as url FROM images WHERE animal_ID = ?`,
         [queryResult[0].insertId]
       );
+      
       await connection.commit();
       const result = fetchResult[0][0];
       result['images'] = animal_images[0];
