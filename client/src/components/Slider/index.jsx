@@ -1,6 +1,6 @@
 import { Container } from '@mui/material';
 import React from 'react';
-import { Navigation, Pagination, EffectCoverflow } from 'swiper';
+import { Navigation, Pagination, EffectCoverflow, Autoplay } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -23,11 +23,14 @@ function Slider({ images, paddingY, variant }) {
   return (
     <Container className={`slider slider--${variant}`} sx={{ py: paddingY }} maxWidth='md' component='section'>
       <Swiper
-        modules={[Pagination, Navigation, EffectCoverflow]}
+        modules={[Pagination, Navigation, EffectCoverflow, Autoplay]}
         effect='coverflow'
         coverflowEffect={{
           rotate: 50,
           slideShadows: false,
+        }}
+        autoplay={{
+          delay: 2000,
         }}
         centeredSlides={true}
         slidesPerView='auto'
@@ -42,7 +45,7 @@ function Slider({ images, paddingY, variant }) {
       >
         {images.map((image, index) => (
           <SwiperSlide key={index} tag='li'>
-            <img src={image} alt={image} className='slider__img' />
+            <img src={image.url} alt={image.url} className='slider__img' />
           </SwiperSlide>
         ))}
       </Swiper>

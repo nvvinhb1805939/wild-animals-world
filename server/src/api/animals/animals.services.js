@@ -1,11 +1,33 @@
 const pool = require('../../config/connectDB');
 
 module.exports = {
-  get: async () => {
+  getAll: async () => {
     const connection = await pool.getConnection();
     try {
       await connection.beginTransaction();
-      const fetchAnimalResults = await connection.query('select * from animals');
+      const fetchAnimalResults = await connection.query('select * from animals where visibility = 1');
+      const [result] = fetchAnimalResults;
+      for (let i in result) {
+        const fetchAnimalImageResults = await connection.query(
+          `SELECT image_ID, CONCAT('${process.env.URL}', url) as url FROM images WHERE animal_ID = ?`,
+          [result[i].animal_ID]
+        );
+        result[i]['images'] = fetchAnimalImageResults[0];
+      }
+      return result;
+    } catch (error) {
+      return error;
+    } finally {
+      connection.release();
+    }
+  },
+  get: async animal_ID => {
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
+      const fetchAnimalResults = await connection.query(
+        `select * from animals where animal_ID = ${animal_ID} and visibility = 1`
+      );
       const [result] = fetchAnimalResults;
       for (let i in result) {
         const fetchAnimalImageResults = await connection.query(
@@ -26,7 +48,7 @@ module.exports = {
     try {
       await connection.beginTransaction();
       const queryResult = await connection.query(
-        `insert into animals values(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        `insert into animals values(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
         [
           animals.sciencetificName,
           animals.vietnameseName,
@@ -48,6 +70,7 @@ module.exports = {
           animals.habitat,
           animals.postDate,
           animals.author,
+          animals.visibility,
         ]
       );
       const animal_ID = queryResult[0].insertId;
@@ -61,7 +84,7 @@ module.exports = {
         `SELECT image_ID, CONCAT('${process.env.URL}', url) as url FROM images WHERE animal_ID = ?`,
         [queryResult[0].insertId]
       );
-      
+
       await connection.commit();
       const result = fetchResult[0][0];
       result['images'] = animal_images[0];

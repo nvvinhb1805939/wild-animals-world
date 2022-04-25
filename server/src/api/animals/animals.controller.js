@@ -1,9 +1,21 @@
-const { get, add } = require('./animals.services');
+const { getAll, get, add } = require('./animals.services');
 
 module.exports = {
+  getAll: async (req, res) => {
+    try {
+      const result = await getAll();
+      return res.status(200).json(result);
+    } catch (e) {
+      return res.status(500).json({
+        message: 'Internal Server Error',
+        e,
+      });
+    }
+  },
   get: async (req, res) => {
     try {
-      const result = await get();
+      const animal_ID = req.params.animal_ID;
+      const result = await get(animal_ID);
       return res.status(200).json(result);
     } catch (e) {
       return res.status(500).json({
