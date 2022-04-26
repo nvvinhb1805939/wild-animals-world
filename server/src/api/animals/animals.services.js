@@ -75,7 +75,6 @@ module.exports = {
     const connection = await pool.getConnection();
     try {
       await connection.beginTransaction();
-      
       const fetchAnimalResults = await connection.query('select * from animals where animal_ID = ?', animal_ID);
       const [result] = fetchAnimalResults;
       for (let i in result) {
@@ -94,7 +93,6 @@ module.exports = {
   },
   update: async (animals, images) => {
     const connection = await pool.getConnection();
-  
     try {
       await connection.beginTransaction();
       const queryResult = await connection.query(`update animals set 
@@ -120,13 +118,11 @@ module.exports = {
         postDate = '${animals.postDate}',
         author = '${animals.author}' where animal_ID = ${animals.animal_ID}`
       )
-    
       const animal_ID = animals.animal_ID;
       const fetchResult = await connection.query(`SELECT * FROM images WHERE animal_ID = ${animal_ID}`);
-     
       for (let i in fetchResult[0]) {
         await connection.query(`update images set url = '${images[i].filename}' where image_ID = ${fetchResult[0][i].image_ID}`);
-      }  
+      }
       await connection.commit();
       const result = fetchResult[0];
       return result
@@ -138,15 +134,35 @@ module.exports = {
   },
   remove: async (animal_ID) => {
     const connection = await pool.getConnection();
-    
     try {
       await connection.beginTransaction();
-      
-      console.log(animal_ID)
       const result = await connection.query(`update animals set visibility = 0 where animal_ID = ?`, animal_ID)
       await connection.commit();
-      
       return result;
+    } catch (error) {
+      return error;
+    } finally {
+      connection.release();
+    }
+  },
+  search: async (vietnameseName) => {
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
+      const resultQuery = await connection.query(`select vietnameseName from animals`)
+      const arrAnimals = [];
+      for (let i = 0; i < resultQuery[0].length; i++) {
+        if (resultQuery[0][i].vietnameseName.search(vietnameseName) != -1) {
+          arrAnimals.push(resultQuery[0][i])
+        }
+      }
+      const arrAnimal_ID = [];
+      for (let i = 0; i < arrAnimals.length; i++) {
+        const result = await connection.query(`select animal_ID from animals where vietnameseName = '${arrAnimals[i].vietnameseName}'`)
+        arrAnimal_ID.push(result[0][0])
+      }
+      await connection.commit();
+      return arrAnimal_ID;
     } catch (error) {
       return error;
     } finally {

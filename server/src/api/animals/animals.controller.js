@@ -1,4 +1,4 @@
-const { get, add, update, getAnimalById, remove} = require('./animals.services');
+const { get, add, update, getAnimalById, remove, search} = require('./animals.services');
 
 module.exports = {
   get: async (req, res) => {
@@ -31,7 +31,6 @@ module.exports = {
     try {
       const animal_ID = req.query;
       let id = animal_ID.animail_ID
-      console.log(id)
       const result = await getAnimalById(id);
       return res.status(200).json(result);
     } catch (e) {
@@ -46,9 +45,7 @@ module.exports = {
       const animals = req.body;
       const images = req.files;
       const result = await update(animals, images)
-
       return res.status(201).json(result);
-
     } catch (e) {
       return res.status(500).json({
         message: 'Internal Server Error',
@@ -59,13 +56,24 @@ module.exports = {
   remove: async (req, res) => {
     try {
       const {animal_ID} = req.body
-
       const result = await remove(animal_ID);
       return res.status(201).json(result);
     } catch (e) {
       return res.status(500).json({
         message: 'Internal Server Erorr',
         e,
+      });
+    }
+  },
+  search: async (req, res) => {
+    try {
+      const {vietnameseName} = req.body
+      const result = await search(vietnameseName);
+      return res.status(200).json(result);
+    } catch (e) {
+      return res.status(500).json({
+        message: 'Internal Server Erorr',
+        e, 
       });
     }
   },
