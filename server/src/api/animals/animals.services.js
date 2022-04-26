@@ -50,20 +50,102 @@ module.exports = {
           animals.author,
         ]
       );
-      const animal_ID = queryResult[0].insertId;
+      const animal_ID = queryResult[0][0].insertId;
       for (let i in images) {
         await connection.query(`insert into images (url, animal_ID) values(?,?)`, [images[i].filename, animal_ID]);
       }
       const fetchResult = await connection.query(`SELECT * FROM animals WHERE animal_ID = ?`, [
-        queryResult[0].insertId,
+        queryResult[0][0].insertId,
       ]);
       const animal_images = await connection.query(
         `SELECT image_ID, CONCAT('${process.env.URL}', url) as url FROM images WHERE animal_ID = ?`,
-        [queryResult[0].insertId]
+        [queryResult[0][0].insertId]
       );
       await connection.commit();
       const result = fetchResult[0][0];
       result['images'] = animal_images[0];
+      return result;
+    } catch (error) {
+      return error;
+    } finally {
+      connection.release();
+    }
+  },
+  getAnimalById: async (animal_ID) => {
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
+      
+      const fetchAnimalResults = await connection.query('select * from animals where animal_ID = ?', animal_ID);
+      const [result] = fetchAnimalResults;
+      for (let i in result) {
+        const fetchAnimalImageResults = await connection.query(
+          `SELECT image_ID, CONCAT('${process.env.URL}', url) as url FROM images WHERE animal_ID = ?`,
+          [result[i].animal_ID]
+        );
+        result[i]['images'] = fetchAnimalImageResults[0];
+      }
+      return result;
+    } catch (error) {
+      return error;
+    } finally {
+      connection.release();
+    }
+  },
+  update: async (animals, images) => {
+    const connection = await pool.getConnection();
+  
+    try {
+      await connection.beginTransaction();
+      const queryResult = await connection.query(`update animals set 
+        animal_ID = ${animals.animal_ID},
+        sciencetificName = '${animals.sciencetificName}',
+        vietnameseName = '${animals.vietnameseName}',
+        localName = '${animals.localName}',
+        regnum = '${animals.regnum}',
+        phylum = '${animals.phylum}',
+        animalClass = '${animals.animalClass}',
+        ordo = '${animals.ordo}',
+        familia = '${animals.familia}',
+        morphological = '${animals.morphological}',
+        ecological = '${animals.ecological}',
+        usageValue = '${animals.usageValue}',
+        IUCN = '${animals.IUCN}',
+        redBook = '${animals.redBook}',
+        goverment = '${animals.goverment}',
+        CITES = '${animals.CITES}',
+        allocation = '${animals.allocation}',
+        templateStatus = '${animals.templateStatus}',
+        habitat = '${animals.habitat}',
+        postDate = '${animals.postDate}',
+        author = '${animals.author}' where animal_ID = ${animals.animal_ID}`
+      )
+    
+      const animal_ID = animals.animal_ID;
+      const fetchResult = await connection.query(`SELECT * FROM images WHERE animal_ID = ${animal_ID}`);
+     
+      for (let i in fetchResult[0]) {
+        await connection.query(`update images set url = '${images[i].filename}' where image_ID = ${fetchResult[0][i].image_ID}`);
+      }  
+      await connection.commit();
+      const result = fetchResult[0];
+      return result
+    } catch (error) {
+      return error;
+    } finally {
+      connection.release();
+    }
+  },
+  remove: async (animal_ID) => {
+    const connection = await pool.getConnection();
+    
+    try {
+      await connection.beginTransaction();
+      
+      console.log(animal_ID)
+      const result = await connection.query(`update animals set visibility = 0 where animal_ID = ?`, animal_ID)
+      await connection.commit();
+      
       return result;
     } catch (error) {
       return error;
