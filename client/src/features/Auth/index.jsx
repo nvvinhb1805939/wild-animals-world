@@ -1,10 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Routes, Route } from 'react-router-dom';
-import LoginPage from './pages/LoginPage';
+import { Route, Routes } from 'react-router-dom';
 import NotFound from '../../components/NotFound';
-
-AuthFeature.propTypes = {};
+import LoginPage from './pages/LoginPage';
 
 function AuthFeature(props) {
   return (

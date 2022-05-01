@@ -1,20 +1,25 @@
 import { unwrapResult } from '@reduxjs/toolkit';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 import LoginForm from '../../components/LoginForm';
 import { login } from '../../userSlice';
 
-LoginPage.propTypes = {};
-
 function LoginPage() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
   const [isLoginSuccess, setIsLoginSuccess] = useState(() => JSON.parse(localStorage.getItem('loginStatus')) || false);
 
   useEffect(() => {
-    if (isLoginSuccess) navigate(-1);
+    if (!isLoginSuccess) return;
+    if (location.state?.pathname.split('/')[1] === 'dashboard') {
+      const path = `${user.data?.userName}-${user.data?.user_ID}`;
+      navigate(`/dashboard/${path}`);
+      return;
+    }
+    navigate(-1);
   }, [isLoginSuccess]);
 
   const handleOnSubmit = async data => {

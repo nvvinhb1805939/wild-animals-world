@@ -1,3 +1,11 @@
 https://kbroman.org/github_tutorial/pages/fork.html
 
 ### handle redirect to not found component when animal does not exit
+
+### handle search
+
+    ### show list, skeleton, debounce
+
+### management page
+
+    ### show table list

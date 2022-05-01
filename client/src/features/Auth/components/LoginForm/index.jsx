@@ -1,19 +1,11 @@
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
-import Container from '@mui/material/Container';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
-import InputField from '../../../../components/form-controls/InputField';
-import Typography from '@mui/material/Typography';
+import { Avatar, Box, Button, Container, Grid, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
-import PasswordField from '../../../../components/form-controls/PasswordField';
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
+import InputField from '../../../../components/form-controls/InputField';
+import PasswordField from '../../../../components/form-controls/PasswordField';
+import Logo from '../../../../components/Logo';
 
 LoginForm.propTypes = {
   onSubmit: PropTypes.func,
@@ -30,7 +22,6 @@ export default function LoginForm({ onSubmit }) {
   const { formState, handleSubmit, control } = useForm();
 
   const response = useSelector(state => state.user);
-  // console.log({ response });
 
   return (
     <Container component='section' maxWidth='xs'>
@@ -41,10 +32,8 @@ export default function LoginForm({ onSubmit }) {
           alignItems: 'center',
         }}
       >
-        <Avatar sx={{ mb: 2, bgcolor: 'primary.main' }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component='h1' variant='h5' sx={{ mb: 1, fontWeight: 500, color: 'primary.main' }}>
+        <Logo />
+        <Typography component='h1' variant='h5' sx={{ mt: 2, mb: 1, fontWeight: 500 }}>
           Đăng Nhập
         </Typography>
         <Box component='form' onSubmit={handleSubmit(handleOnSubmit)} sx={{ mt: 1 }}>

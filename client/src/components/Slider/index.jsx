@@ -31,6 +31,7 @@ function Slider({ images, paddingY, variant }) {
         }}
         autoplay={{
           delay: 2000,
+          disableOnInteraction: false,
         }}
         centeredSlides={true}
         slidesPerView='auto'

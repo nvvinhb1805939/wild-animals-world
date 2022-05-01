@@ -26,7 +26,7 @@ module.exports = {
     try {
       await connection.beginTransaction();
       const fetchAnimalResults = await connection.query(
-        `select * from animals where animal_ID = ${animal_ID} and visibility = 1`
+        `select * from animals where animal_ID = '${animal_ID}' and visibility = 1`
       );
       const [result] = fetchAnimalResults;
       for (let i in result) {

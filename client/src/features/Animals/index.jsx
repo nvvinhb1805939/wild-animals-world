@@ -9,7 +9,6 @@ function AnimalsFeature() {
     <Routes>
       <Route path='/' element={<MainPage />} />
       <Route path=':animalInfo' element={<DetailPage />} />
-      <Route path='*' element={<NotFound />} />
     </Routes>
   );
 }

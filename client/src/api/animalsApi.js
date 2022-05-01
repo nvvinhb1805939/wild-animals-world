@@ -2,7 +2,7 @@ import axiosClient from './axiosClient';
 
 const animalsApi = {
   getAll() {
-    const url = `/animals/get/`;
+    const url = `/animals/getAll/`;
     return axiosClient.get(url);
   },
   get(id) {

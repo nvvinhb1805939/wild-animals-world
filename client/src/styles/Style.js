@@ -36,6 +36,7 @@ const theme = createTheme({
           cursor: 'pointer',
           outline: 'none',
           backfaceVisibility: 'hidden',
+          transition: 'all 0.25s ease-in-out',
 
           '&::before': {
             content: '""',
@@ -43,11 +44,16 @@ const theme = createTheme({
             inset: 0,
             zIndex: -1,
             borderRadius: 'inherit',
+            transition: 'all 0.25s ease-in-out',
           },
 
           '&:hover': {
             background: 'none',
             boxShadow: 'none',
+          },
+
+          '& a': {
+            transition: '0s',
           },
         },
       },
@@ -95,24 +101,17 @@ const theme = createTheme({
           boxShadow: vars.primaryShadow,
         },
       },
-      variants: [
-        {
-          props: { color: 'primary' },
-          style: {
-            background: vars.foreground,
-          },
-        },
-        {
-          props: { color: 'secondary' },
-          style: {
-            background: vars.background,
-          },
-        },
-      ],
     },
     MuiListItem: {
       defaultProps: {
         disablePadding: true,
+      },
+    },
+    MuiListItemIcon: {
+      styleOverrides: {
+        root: {
+          minWidth: 'unset',
+        },
       },
     },
   },

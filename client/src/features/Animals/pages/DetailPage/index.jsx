@@ -20,9 +20,15 @@ function DetailPage() {
 
   useEffect(() => {
     const getAnimalById = async animalID => {
-      if (animalID === '') setIsNotFound(true);
+      if (animalID === '') {
+        setIsNotFound(true);
+        return;
+      }
       const response = await dispatch(fetchAnimalById(animalID));
-      if (!Array.isArray(unwrapResult(response))) setIsNotFound(true);
+      const payload = unwrapResult(response);
+      if (payload.length == 0) {
+        setIsNotFound(true);
+      }
     };
     getAnimalById(animalID);
   }, []);

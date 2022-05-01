@@ -20,7 +20,7 @@ const upload = multer({
   storage: storage,
 }).array('images');
 
-router.get('/get', getAll);
+router.get('/getAll', getAll);
 router.get('/get/:animal_ID', get);
 router.post('/add', upload, add);
 
