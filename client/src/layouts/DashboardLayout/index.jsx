@@ -1,12 +1,10 @@
 import { Box } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
+import DashboardFeature from '../../features/Dashboard';
 import Header from '../../features/Dashboard/components/Header';
 import Sidebar from '../../features/Dashboard/components/Sidebar';
-import { useState } from 'react';
 
-DashboardLayout.propTypes = {};
-
-function DashboardLayout({ children }) {
+function DashboardLayout() {
   const [isOpenSidebar, setIsOpenSidebar] = useState(true);
   const handleToggleSidebar = () => {
     setIsOpenSidebar(!isOpenSidebar);
@@ -15,9 +13,14 @@ function DashboardLayout({ children }) {
   return (
     <Box>
       <Sidebar isOpen={isOpenSidebar} />
-      <Box>
+      <Box
+        sx={{
+          ml: isOpenSidebar ? '300px' : 0,
+          transition: 'margin-left 0.25s linear',
+        }}
+      >
         <Header onToggleClick={handleToggleSidebar} isCollapse={isOpenSidebar} />
-        {children}
+        <DashboardFeature />
       </Box>
     </Box>
   );

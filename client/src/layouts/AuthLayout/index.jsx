@@ -1,7 +1,13 @@
 import React from 'react';
+import { Box } from '@mui/material';
+import AuthFeature from '../../features/Auth';
 
-function AuthLayout({ children }) {
-  return <div>{children}</div>;
+function AuthLayout() {
+  return (
+    <Box>
+      <AuthFeature />
+    </Box>
+  );
 }
 
 export default AuthLayout;

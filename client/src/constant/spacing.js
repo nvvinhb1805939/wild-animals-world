@@ -1,6 +1,8 @@
 const SPACING = {
+  DEFAULT_PX_PER_SPACING: 8,
   SIDEBAR_WIDTH: 300,
   AVATAR_WIDTH: 50,
+  HEADER_HEIGHT: 64,
 };
 
 export default SPACING;

@@ -80,7 +80,7 @@ function Sidebar({ isOpen }) {
             },
           }}
         >
-          <NavLink className='sidebar__nav-link' to={`${userData.userName}-${userData.user_ID}/management`} end>
+          <NavLink className='sidebar__nav-link' to={`${userData.userName}-${userData.user_ID}/animals`}>
             <ListItemButton
               sx={{
                 gap: 2,
@@ -90,7 +90,7 @@ function Sidebar({ isOpen }) {
               <ListItemIcon sx={{ color: 'inherit' }}>
                 <ViewListIcon />
               </ListItemIcon>
-              <ListItemText primary='Quản lý' sx={{ '& > span': { fontWeight: 'inherit' } }} />
+              <ListItemText primary='Động vật' sx={{ '& > span': { fontWeight: 'inherit' } }} />
             </ListItemButton>
           </NavLink>
         </Box>

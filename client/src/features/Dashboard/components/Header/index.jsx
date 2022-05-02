@@ -7,6 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { IconButton } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import PropTypes from 'prop-types';
+import CustomTooltip from '../../../../components/CustomTooltip';
 
 Header.propTypes = {
   onToggleClick: PropTypes.func,
@@ -32,13 +33,17 @@ function Header({ onToggleClick, isCollapse }) {
     >
       <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
         {isCollapse ? (
-          <IconButton onClick={handleOnToggleClick}>
-            <KeyboardArrowLeftIcon sx={{ width: 32, height: 32 }} />
-          </IconButton>
+          <CustomTooltip title='Ẩn sidebar'>
+            <IconButton onClick={handleOnToggleClick}>
+              <KeyboardArrowLeftIcon sx={{ width: 32, height: 32 }} />
+            </IconButton>
+          </CustomTooltip>
         ) : (
-          <IconButton onClick={handleOnToggleClick}>
-            <MenuIcon sx={{ width: 32, height: 32 }} />
-          </IconButton>
+          <CustomTooltip title='Hiện sidebar'>
+            <IconButton onClick={handleOnToggleClick}>
+              <MenuIcon sx={{ width: 32, height: 32 }} />
+            </IconButton>
+          </CustomTooltip>
         )}
         <AccountMenu userData={userData} isHomePage={false} />
       </Toolbar>

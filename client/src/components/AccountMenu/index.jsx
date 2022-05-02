@@ -47,13 +47,14 @@ function AccountMenu({ userData, isHomePage }) {
   };
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+    <Box>
       <IconButton
         onClick={handleAvatarClick}
         size='small'
         aria-controls={open ? 'account-menu' : undefined}
         aria-haspopup='true'
         aria-expanded={open ? 'true' : undefined}
+        sx={{ mr: '-5px' }}
       >
         <AccountAvatar userData={userData} />
       </IconButton>
