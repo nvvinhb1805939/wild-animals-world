@@ -28,6 +28,24 @@ export const addAnimal = createAsyncThunk('animals/add', async (data, { rejectWi
   }
 });
 
+export const updateAnimal = createAsyncThunk('animals/update', async (data, { rejectWithValue }) => {
+  try {
+    const response = await animalsApi.update(data);
+    return response;
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
+});
+
+export const removeAnimal = createAsyncThunk('animals/remove', async (data, { rejectWithValue }) => {
+  try {
+    const response = await animalsApi.remove(data);
+    return response;
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
+});
+
 const initialState = {
   loading: false,
   animals: [],
@@ -62,19 +80,6 @@ const animalsSlice = createSlice({
         state.error = '';
       })
       .addCase(fetchAnimalById.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      });
-    builder
-      .addCase(addAnimal.pending, (state, action) => {
-        state.loading = true;
-      })
-      .addCase(addAnimal.fulfilled, (state, action) => {
-        state.loading = false;
-        state.animals = action.payload;
-        state.error = '';
-      })
-      .addCase(addAnimal.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

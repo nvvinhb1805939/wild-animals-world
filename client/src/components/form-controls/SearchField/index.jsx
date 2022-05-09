@@ -1,41 +1,49 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Controller } from 'react-hook-form';
-import { Input, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { Box, Input, InputAdornment } from '@mui/material';
+import PropTypes from 'prop-types';
+import React, { useEffect } from 'react';
+import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 SearchField.propTypes = {
-  control: PropTypes.object.isRequired,
   name: PropTypes.string.isRequired,
   onSearchFocus: PropTypes.func,
+  onSearchChange: PropTypes.func,
 };
 SearchField.defaultProps = {
   onSearchFocus: null,
+  onSearchChange: null,
 };
 
-function SearchField({ control, name, onSearchFocus }) {
+function SearchField({ name, onSearchFocus, onSearchChange }) {
+  // const [searchParams, setSearchParams] = useSearchParams();
+
+  // useEffect(() => {
+  //   setSearchParams('');
+  // }, []);
   const handleOnFocus = () => {
     if (onSearchFocus) onSearchFocus();
   };
 
+  const handleOnSearchChange = e => {
+    if (onSearchChange) onSearchChange(e.target.value.trim().toLowerCase());
+  };
+
   return (
-    <Controller
-      control={control}
-      name={name}
-      render={({ field: { onChange } }) => (
-        <Input
-          inputProps={{ onFocus: handleOnFocus }}
-          onChange={onChange}
-          startAdornment={
-            <InputAdornment position='start'>
-              <SearchIcon />
-            </InputAdornment>
-          }
-          placeholder='Tìm kiếm'
-          fullWidth
-        />
-      )}
-    />
+    <Box>
+      <Input
+        name={name}
+        inputProps={{ onFocus: handleOnFocus }}
+        onChange={handleOnSearchChange}
+        startAdornment={
+          <InputAdornment position='start'>
+            <SearchIcon />
+          </InputAdornment>
+        }
+        placeholder='Tìm kiếm'
+        fullWidth
+      />
+    </Box>
   );
 }
 

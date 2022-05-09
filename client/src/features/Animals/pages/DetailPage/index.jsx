@@ -60,8 +60,8 @@ function DetailPage() {
                   {animal?.vietnameseName}
                 </Typography>
                 <List>
-                  <ListItem disableGutters sx={{ gap: 1 }}>
-                    <Typography sx={{ fontWeight: 600 }}>Tên khoa học:</Typography>
+                  <ListItem disableGutters sx={{ gap: 1, alignItems: 'flex-start' }}>
+                    <Typography sx={{ flexShrink: 0, fontWeight: 600 }}>Tên khoa học:</Typography>
                     <Typography>{animal?.sciencetificName}</Typography>
                   </ListItem>
                   <ListItem disableGutters sx={{ gap: 1 }}>

@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import NotFound from '../../components/NotFound';
 import SPACING from '../../constant/spacing';
 import AccountInfo from './pages/AccountInfo';
@@ -19,8 +19,8 @@ function DashboardFeature() {
       }}
     >
       <Routes>
-        <Route path=':dashboardInfo' element={<Dashboard />} />
-        <Route path=':dashboardInfo/account' element={<AccountInfo />} />
+        <Route path=':dashboardInfo' element={<Navigate to='animals' />} />
+        {/* <Route path=':dashboardInfo/account' element={<AccountInfo />} /> */}
         <Route path=':dashboardInfo/animals' element={<Animals />} />
         <Route path=':dashboardInfo/animals/add' element={<AddUpdateAnimal />} />
         <Route path=':dashboardInfo/animals/:animal_ID' element={<AddUpdateAnimal />} />

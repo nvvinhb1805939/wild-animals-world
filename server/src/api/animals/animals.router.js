@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { getAll, get, add } = require('./animals.controller');
+const { getAll, get, add, update, remove, search } = require('./animals.controller');
 const multer = require('multer');
 const path = require('path');
 
@@ -23,5 +23,8 @@ const upload = multer({
 router.get('/getAll', getAll);
 router.get('/get/:animal_ID', get);
 router.post('/add', upload, add);
+router.patch('/update', upload, update);
+router.delete('/remove', upload, remove);
+router.get('/search', upload, search);
 
 module.exports = router;

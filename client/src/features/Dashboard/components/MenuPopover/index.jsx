@@ -7,18 +7,29 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 MenuPopover.propTypes = {
+  onDeleteClick: PropTypes.func,
   path: PropTypes.string.isRequired,
 };
+MenuPopover.defaultProps = {
+  onDeleteClick: null,
+};
 
-function MenuPopover({ path }) {
+function MenuPopover({ path, onDeleteClick }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const animalRemovedID = path.split('-').pop();
+
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleDeleteClick = () => {
+    handleClose();
+    if (onDeleteClick) onDeleteClick(animalRemovedID);
+  };
+
   return (
     <Box>
       <IconButton onClick={handleClick}>
@@ -43,7 +54,7 @@ function MenuPopover({ path }) {
             Cập nhật
           </MenuItem>
         </Link>
-        <MenuItem onClick={handleClose} sx={{ gap: 1, fontSize: 14 }}>
+        <MenuItem onClick={handleDeleteClick} sx={{ gap: 1, fontSize: 14 }}>
           <DeleteIcon sx={{ width: 20 }} />
           Xoá
         </MenuItem>

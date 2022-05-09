@@ -1,9 +1,8 @@
 import { Box } from '@mui/material';
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { addAnimal, fetchAnimalById } from '../../../Animals/animalsSlice';
+import { addAnimal, fetchAnimalById, updateAnimal } from '../../../Animals/animalsSlice';
 import Form from '../../components/Form';
 import Heading from '../../components/Heading';
 
@@ -42,9 +41,14 @@ function AddUpdateAnimal(props) {
     : updatedAnimal;
 
   const handleOnSubmit = async data => {
-    // await dispatch(addAnimal(data));
+    if (isAddMode) {
+      const response = await dispatch(addAnimal(data));
+      window.alert('Thêm động vật thành công');
+    } else {
+      const response = await dispatch(updateAnimal(data));
+      window.alert('Cập nhật động vật thành công');
+    }
   };
-  console.log(updatedAnimalID, isAddMode, updatedAnimal, defaultValues);
 
   useEffect(() => {
     if (isAddMode) return;
@@ -56,7 +60,7 @@ function AddUpdateAnimal(props) {
 
   return (
     <Box>
-      <Heading text={params.animal_ID ? 'Cập nhật thông tin động vật' : 'Thêm động vật'} />
+      <Heading text={isAddMode ? 'Thêm động vật' : 'Cập nhật thông tin động vật'} />
       <Form onSubmit={handleOnSubmit} defaultValues={defaultValues} isAddMode={isAddMode} />
     </Box>
   );

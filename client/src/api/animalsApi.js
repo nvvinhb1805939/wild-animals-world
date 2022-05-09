@@ -18,12 +18,24 @@ const animalsApi = {
     return axiosClient.post(url, data);
   },
   update(data) {
-    const url = `/animals/updateAnimal/`;
+    const url = `/animals/update/`;
     return axiosClient.patch(url, data);
   },
-  remove() {
-    const url = `/animals/deleteAnimal/`;
-    return axiosClient.delete(url);
+  remove(animal_ID) {
+    const url = `/animals/remove`;
+    return axiosClient.delete(url, {
+      params: {
+        animal_ID: animal_ID,
+      },
+    });
+  },
+  search(vietnameseName) {
+    const url = `/animals/search`;
+    return axiosClient.get(url, {
+      params: {
+        vietnameseName: vietnameseName,
+      },
+    });
   },
 };
 

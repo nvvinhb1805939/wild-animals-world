@@ -18,16 +18,11 @@ Form.defaultProps = {
 };
 
 function Form({ onSubmit, defaultValues, isAddMode }) {
-  console.log(defaultValues);
-  const [selectedImages, setSelectedImages] = useState(() => {
-    console.log(defaultValues.length);
-    if (isAddMode) return [];
-    if (defaultValues.length == 0) return {};
-    return defaultValues.images.map(image => image.url);
-  });
+  const [selectedImages, setSelectedImages] = useState(() =>
+    isAddMode ? [] : defaultValues.images.map(image => image.url)
+  );
   const imagesInputRef = useRef();
-  console.log(selectedImages);
-  const { formState, handleSubmit, control } = useForm({
+  const { formState, reset, handleSubmit, control } = useForm({
     defaultValues: defaultValues,
   });
 
@@ -40,17 +35,14 @@ function Form({ onSubmit, defaultValues, isAddMode }) {
   };
 
   const renderPreviewPhotos = photos => {
-    if (!Array.isArray(photos)) return;
-    photos.map(photo => (
-      <Grid item lg={4} key={photo} sx={{ '& img': { width: '100%', height: '100%' } }}>
-        {console.log(photo)}
+    return photos.map((photo, index) => (
+      <Grid item lg={4} key={index} sx={{ '& img': { width: '100%', height: '100%' } }}>
         <img src={photo} alt='img' />
       </Grid>
     ));
   };
 
   const handleOnSubmit = data => {
-    console.log(data);
     const formData = new FormData();
     for (let key in data) {
       formData.append(key, data[key]);
@@ -59,7 +51,13 @@ function Form({ onSubmit, defaultValues, isAddMode }) {
       formData.append('images', file);
     });
 
-    // if (onSubmit) onSubmit(formData);
+    if (onSubmit) {
+      onSubmit(formData);
+      if (isAddMode) {
+        reset();
+        setSelectedImages([]);
+      }
+    }
   };
 
   return (

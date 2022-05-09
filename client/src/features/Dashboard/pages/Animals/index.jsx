@@ -1,12 +1,12 @@
 import AddIcon from '@mui/icons-material/Add';
 import { alpha, Avatar, Box, Button, Stack, Typography } from '@mui/material';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CustomTooltip from '../../../../components/CustomTooltip';
 import STATUS from '../../../../constant/status';
 import toSpinalCase from '../../../../utils/spinalCase';
-import { fetchAnimals } from '../../../Animals/animalsSlice';
+import { fetchAnimals, removeAnimal } from '../../../Animals/animalsSlice';
 import CustomDataGrid from '../../components/CustomDataGrid';
 import Heading from '../../components/Heading';
 import MenuPopover from '../../components/MenuPopover';
@@ -17,6 +17,7 @@ function AnimalPage() {
   const dispatch = useDispatch();
   const response = useSelector(state => state.animals);
   const user = useSelector(state => state.user.data);
+  const [deleted, setDeleted] = useState(0);
   const { animals } = response;
   const dataGrid = useMemo(
     () => ({
@@ -85,7 +86,9 @@ function AnimalPage() {
           width: ICON_CELL_WIDTH,
           align: 'center',
           sortable: false,
-          renderCell: params => <MenuPopover path={toSpinalCase(`${params.row.name}-${params.row.id}`)} />,
+          renderCell: params => (
+            <MenuPopover path={toSpinalCase(`${params.row.name}-${params.row.id}`)} onDeleteClick={handleDeleteClick} />
+          ),
         },
       ],
       rows: Array.isArray(animals)
@@ -109,7 +112,13 @@ function AnimalPage() {
       await dispatch(fetchAnimals(user_ID));
     };
     getAllAnimals(user.user_ID);
-  }, [animals.length]);
+  }, [animals.length, deleted]);
+
+  const handleDeleteClick = async animal_ID => {
+    await dispatch(removeAnimal(animal_ID));
+    setDeleted(prevState => prevState + 1);
+    window.alert('Xoá động vật thành công');
+  };
 
   return (
     <Box>

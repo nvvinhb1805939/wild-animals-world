@@ -1,4 +1,4 @@
-const toLatinString = vietNameseString =>
+export const toLatinString = vietNameseString =>
   vietNameseString
     .toLowerCase()
     .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a')
