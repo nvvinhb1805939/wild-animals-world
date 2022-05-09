@@ -1,10 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { Container } from '@mui/material';
-import './Footer.scss';
+import React from 'react';
 import Logo from '../Logo';
-
-Footer.propTypes = {};
+import './Footer.scss';
 
 function Footer(props) {
   return (

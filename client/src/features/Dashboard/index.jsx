@@ -8,13 +8,13 @@ import Animals from './pages/Animals';
 import AddUpdateAnimal from './pages/Animals/addUpdate';
 import Dashboard from './pages/Dashboard';
 
-const PADDING_BOX = 4;
+const BOX_PADDING = 4;
 
 function DashboardFeature() {
   return (
     <Box
       sx={{
-        p: PADDING_BOX,
+        p: BOX_PADDING,
         mt: `${SPACING.HEADER_HEIGHT}px`,
       }}
     >
@@ -27,7 +27,7 @@ function DashboardFeature() {
         <Route
           path='*'
           element={
-            <Box sx={{ m: -PADDING_BOX, mt: -(PADDING_BOX + SPACING.HEADER_HEIGHT / SPACING.DEFAULT_PX_PER_SPACING) }}>
+            <Box sx={{ m: -BOX_PADDING, mt: -(BOX_PADDING + SPACING.HEADER_HEIGHT / SPACING.DEFAULT_PX_PER_SPACING) }}>
               <NotFound />
             </Box>
           }

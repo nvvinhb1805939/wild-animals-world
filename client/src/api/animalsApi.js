@@ -1,9 +1,13 @@
 import axiosClient from './axiosClient';
 
 const animalsApi = {
-  getAll() {
-    const url = `/animals/getAll/`;
-    return axiosClient.get(url);
+  getAll(user_ID) {
+    const url = `/animals/getAll`;
+    return axiosClient.get(url, {
+      params: {
+        user_ID: user_ID,
+      },
+    });
   },
   get(id) {
     const url = `/animals/get/${id}`;

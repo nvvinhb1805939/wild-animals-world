@@ -4,11 +4,15 @@ import React from 'react';
 
 CustomTooltip.propTypes = {
   title: PropTypes.string.isRequired,
+  placement: PropTypes.string,
+};
+CustomTooltip.defaultProps = {
+  placement: 'bottom',
 };
 
-function CustomTooltip({ title, children }) {
+function CustomTooltip({ title, placement, children }) {
   return (
-    <Tooltip title={title} TransitionComponent={Zoom} arrow>
+    <Tooltip title={title} placement={placement} TransitionComponent={Zoom} arrow>
       {children}
     </Tooltip>
   );

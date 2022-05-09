@@ -1,24 +1,20 @@
-import React from 'react';
-import AlphaSearch from '../../../../components/AlphaSearch';
-import Slider from '../../../../components/Slider';
-import AnimalsList from '../../components/AnimalsList';
-import IMAGES from '../../../../constant/images';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { fetchAnimals } from '../../animalsSlice';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Hero from '../../../../components/Hero';
-
-MainPage.propTypes = {};
+import { fetchAnimals } from '../../animalsSlice';
+import AnimalsList from '../../components/AnimalsList';
 
 function MainPage(props) {
   const dispatch = useDispatch();
+  const response = useSelector(state => state.animals);
+  const { animals } = response;
 
   useEffect(() => {
     const getAllAnimals = async () => {
       await dispatch(fetchAnimals());
     };
     getAllAnimals();
-  }, []);
+  }, [animals.length]);
 
   return (
     <>
@@ -26,7 +22,7 @@ function MainPage(props) {
       <main>
         {/* <Slider images={IMAGES} paddingY={4} />
       <AlphaSearch /> */}
-        <AnimalsList />
+        <AnimalsList data={animals} />
       </main>
     </>
   );

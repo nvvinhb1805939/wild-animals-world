@@ -28,6 +28,7 @@ function Sidebar({ isOpen }) {
         sx: {
           width: SPACING.SIDEBAR_WIDTH,
           borderRightStyle: 'dashed',
+          transition: '0.25s linear !important',
         },
       }}
     >

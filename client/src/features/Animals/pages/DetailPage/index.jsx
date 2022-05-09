@@ -17,7 +17,7 @@ function DetailPage() {
   const animalID = animalInfo.split('-').pop();
   const [isNotFound, setIsNotFound] = useState(false);
   const [value, setValue] = React.useState(0);
-
+  console.log(animal);
   useEffect(() => {
     const getAnimalById = async animalID => {
       if (animalID === '') {

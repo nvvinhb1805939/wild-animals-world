@@ -1,11 +1,12 @@
 const pool = require('../../config/connectDB');
 
 module.exports = {
-  getAll: async () => {
+  getAll: async (user_ID = '') => {
     const connection = await pool.getConnection();
+    const conditionQuery = user_ID ? `and user_ID = ${user_ID}` : '';
     try {
       await connection.beginTransaction();
-      const fetchAnimalResults = await connection.query('select * from animals where visibility = 1');
+      const fetchAnimalResults = await connection.query(`select * from animals where visibility = 1 ${conditionQuery}`);
       const [result] = fetchAnimalResults;
       for (let i in result) {
         const fetchAnimalImageResults = await connection.query(
@@ -47,8 +48,10 @@ module.exports = {
     const connection = await pool.getConnection();
     try {
       await connection.beginTransaction();
+      const date = new Date().toLocaleString();
+      console.log(date);
       const queryResult = await connection.query(
-        `insert into animals values(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
+        `insert into animals values(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, 0, ?, ?)`,
         [
           animals.sciencetificName,
           animals.vietnameseName,
@@ -68,9 +71,10 @@ module.exports = {
           animals.allocation,
           animals.templateStatus,
           animals.habitat,
-          animals.postDate,
+          date,
           animals.author,
-          animals.visibility,
+          animals.rejectedReason,
+          animals.user_ID,
         ]
       );
       const animal_ID = queryResult[0].insertId;

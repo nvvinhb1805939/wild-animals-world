@@ -19,6 +19,7 @@ AccountMenu.defaultProps = {
 };
 
 const TRIANGLE_WIDTH = 10;
+const ICON_PADDING = 5;
 
 function AccountMenu({ userData, isHomePage }) {
   const location = useLocation();
@@ -54,7 +55,7 @@ function AccountMenu({ userData, isHomePage }) {
         aria-controls={open ? 'account-menu' : undefined}
         aria-haspopup='true'
         aria-expanded={open ? 'true' : undefined}
-        sx={{ mr: '-5px' }}
+        sx={{ mr: `${-ICON_PADDING}px` }}
       >
         <AccountAvatar userData={userData} />
       </IconButton>
@@ -87,6 +88,7 @@ function AccountMenu({ userData, isHomePage }) {
         }}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        disableScrollLock
       >
         <MenuItem
           sx={{

@@ -3,7 +3,8 @@ const { getAll, get, add } = require('./animals.services');
 module.exports = {
   getAll: async (req, res) => {
     try {
-      const result = await getAll();
+      const user_ID = req.query.user_ID;
+      const result = await getAll(user_ID);
       return res.status(200).json(result);
     } catch (e) {
       return res.status(500).json({

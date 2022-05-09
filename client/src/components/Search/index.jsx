@@ -1,21 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { set, useForm } from 'react-hook-form';
-import SearchField from '../form-controls/SearchField';
-import { Box } from '@mui/material';
-import { List } from '@mui/material';
-import { ListItem } from '@mui/material';
-import { ListItemAvatar } from '@mui/material';
-import { Avatar } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { ListItemText } from '@mui/material';
-import { useState } from 'react';
-import { useRef } from 'react';
-import { useEffect } from 'react';
+import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import SearchField from '../form-controls/SearchField';
+import PropTypes from 'prop-types';
 
-Search.propTypes = {};
+Search.propTypes = {
+  isContainSearchList: PropTypes.bool,
+};
+Search.defaultProps = {
+  isContainSearchList: true,
+};
 
-function Search(props) {
+function Search({ isContainSearchList }) {
   const boxRef = useRef(null);
   const [isOpenSearchList, setIsOpenSearchList] = useState(false);
 
@@ -26,12 +23,15 @@ function Search(props) {
   });
 
   const handleSearchFocus = () => {
+    if (!isContainSearchList) return;
     setIsOpenSearchList(true);
   };
 
   const handleOnSubmit = data => console.log(data);
 
   useEffect(() => {
+    if (!isContainSearchList) return;
+
     const handleClickOutside = event => {
       if (!boxRef.current?.contains(event.target)) {
         setIsOpenSearchList(false);

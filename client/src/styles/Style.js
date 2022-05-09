@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material';
+import shadows from '@mui/material/styles/shadows';
 import vars from '../assets/scss/_variables.scss';
 
 const buttonStyle = {
@@ -107,28 +108,6 @@ const theme = createTheme({
       },
       variants: buttonVariant,
     },
-    // MuiIconButton: {
-    //   variants: [
-    //     ...buttonVariant,
-    //     {
-    //       props: { color: 'primary' },
-    //       style: {
-    //         ...buttonStyle,
-    //         borderRadius: '50%',
-
-    //         '&::before': {
-    //           boxShadow: `inset 0 0 0 35px ${vars.primary}`,
-    //         },
-    //         '&:hover': {
-    //           color: vars.primary,
-    //         },
-    //         '&:hover::before': {
-    //           boxShadow: `inset 0 0 0 2px ${vars.primary}`,
-    //         },
-    //       },
-    //     },
-    //   ],
-    // },
     MuiAppBar: {
       styleOverrides: {
         root: {
@@ -148,7 +127,15 @@ const theme = createTheme({
         },
       },
     },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          whiteSpace: 'pre-line',
+        },
+      },
+    },
   },
+  shadows: [vars.primaryShadow, ...shadows.slice(1)],
 });
 
 export default theme;
