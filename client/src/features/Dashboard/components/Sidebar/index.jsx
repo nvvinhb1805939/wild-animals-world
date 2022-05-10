@@ -36,7 +36,7 @@ function Sidebar({ isOpen }) {
         <Logo />
       </Box>
       <List sx={{ mx: 1 }}>
-        {/* <Box
+        <Box
           sx={{
             '.active .MuiListItemButton-root': {
               fontWeight: 500,
@@ -53,8 +53,8 @@ function Sidebar({ isOpen }) {
               <ListItemText primary='Dashboard' sx={{ '& > span': { fontWeight: 'inherit' } }} />
             </ListItemButton>
           </NavLink>
-        </Box> */}
-        {/* <Box
+        </Box>
+        <Box
           sx={{
             '.active .MuiListItemButton-root': {
               fontWeight: 500,
@@ -71,7 +71,7 @@ function Sidebar({ isOpen }) {
               <ListItemText primary='Tài khoản' sx={{ '& > span': { fontWeight: 'inherit' } }} />
             </ListItemButton>
           </NavLink>
-        </Box> */}
+        </Box>
         <Box
           sx={{
             '.active .MuiListItemButton-root': {

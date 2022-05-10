@@ -1,5 +1,17 @@
 https://kbroman.org/github_tutorial/pages/fork.html
 
-### handle redirect to not found component when animal does not exit
+#
 
-## xoa anh da chon
+1. Change redux to local state
+2. Authorization
+3. Update images feature
+4. Search feature (includes debounce or throttle)
+5. Validation
+6. Use GG maps
+7. Create skeleton
+8. Review and optimize code
+9. Create notification
+10. Protected route
+11. Lazy loading
+
+#
