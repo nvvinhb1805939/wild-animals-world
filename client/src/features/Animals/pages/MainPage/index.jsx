@@ -1,20 +1,17 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import animalsApi from '../../../../api/animalsApi';
 import Hero from '../../../../components/Hero';
-import { fetchAnimals } from '../../animalsSlice';
 import AnimalsList from '../../components/AnimalsList';
 
 function MainPage(props) {
-  const dispatch = useDispatch();
-  const response = useSelector(state => state.animals);
-  const { animals } = response;
+  const [animals, setAnimals] = useState([]);
 
   useEffect(() => {
-    const getAllAnimals = async () => {
-      await dispatch(fetchAnimals());
-    };
-    getAllAnimals();
-  }, [animals.length]);
+    (async () => {
+      const response = await animalsApi.getAll();
+      setAnimals(response);
+    })();
+  }, []);
 
   return (
     <>

@@ -1,36 +1,27 @@
-import { Container, Grid, List, ListItem, Tab, Tabs, Typography } from '@mui/material';
-import { Box } from '@mui/system';
-import { unwrapResult } from '@reduxjs/toolkit';
+import { Box, Container, Grid, List, ListItem, Tab, Tabs, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import animalsApi from '../../../../api/animalsApi';
 import NotFound from '../../../../components/NotFound';
 import Slider from '../../../../components/Slider';
-import { fetchAnimalById } from '../../animalsSlice';
 import TabPanel from '../../components/TabPanel';
 
 function DetailPage() {
-  const dispatch = useDispatch();
-  const data = useSelector(state => state.animals);
-  const animal = data?.animals[0];
-  const { animalInfo } = useParams();
-  const animalID = animalInfo.split('-').pop();
+  const [animal, setAnimal] = useState({});
   const [isNotFound, setIsNotFound] = useState(false);
-  const [value, setValue] = React.useState(0);
-  console.log(animal);
+  const [value, setValue] = useState(0);
+  const { animalInfo } = useParams();
+  const animal_ID = animalInfo.split('-').pop();
+
   useEffect(() => {
-    const getAnimalById = async animalID => {
-      if (animalID === '') {
+    (async animal_ID => {
+      if (animal_ID === '' || isNaN(animal_ID)) {
         setIsNotFound(true);
         return;
       }
-      const response = await dispatch(fetchAnimalById(animalID));
-      const payload = unwrapResult(response);
-      if (payload.length == 0) {
-        setIsNotFound(true);
-      }
-    };
-    getAnimalById(animalID);
+      const [response] = await animalsApi.get(animal_ID);
+      setAnimal(response);
+    })(animal_ID);
   }, []);
 
   const handleChange = (event, newValue) => {

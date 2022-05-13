@@ -1,11 +1,12 @@
 import axiosClient from './axiosClient';
 
 const animalsApi = {
-  getAll(user_ID) {
+  getAll(user_ID, role) {
     const url = `/animals/getAll`;
     return axiosClient.get(url, {
       params: {
         user_ID: user_ID,
+        role: role,
       },
     });
   },

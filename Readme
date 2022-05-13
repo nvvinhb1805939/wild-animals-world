@@ -2,8 +2,8 @@ https://kbroman.org/github_tutorial/pages/fork.html
 
 #
 
-1. Change redux to local state
-2. Authorization
+1. Change redux to local state ------------X
+2. Authorization -------------X
 3. Update images feature
 4. Search feature (includes debounce or throttle)
 5. Validation

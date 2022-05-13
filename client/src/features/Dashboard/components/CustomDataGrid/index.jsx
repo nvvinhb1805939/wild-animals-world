@@ -27,7 +27,7 @@ function CustomDataGrid({ columns, rows, loading }) {
         pageSize={PAGE_SIZE}
         disableSelectionOnClick
         disableColumnMenu
-        loading={loading}
+        // loading={loading}
         pagination
         components={{
           Pagination: CustomPaginatinon,

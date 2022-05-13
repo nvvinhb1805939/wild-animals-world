@@ -1,12 +1,12 @@
 import AddIcon from '@mui/icons-material/Add';
 import { alpha, Avatar, Box, Button, Stack, Typography } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import animalsApi from '../../../../api/animalsApi';
 import CustomTooltip from '../../../../components/CustomTooltip';
 import STATUS from '../../../../constant/status';
 import toSpinalCase from '../../../../utils/spinalCase';
-import { fetchAnimals, removeAnimal } from '../../../Animals/animalsSlice';
 import CustomDataGrid from '../../components/CustomDataGrid';
 import Heading from '../../components/Heading';
 import MenuPopover from '../../components/MenuPopover';
@@ -14,11 +14,10 @@ import MenuPopover from '../../components/MenuPopover';
 const ICON_CELL_WIDTH = 100;
 
 function AnimalPage() {
-  const dispatch = useDispatch();
-  const response = useSelector(state => state.animals);
   const user = useSelector(state => state.user.data);
-  const [deleted, setDeleted] = useState(0);
-  const { animals } = response;
+  const [animals, setAnimals] = useState([]);
+  const isExpert = user.role === 1;
+
   const dataGrid = useMemo(
     () => ({
       columns: [
@@ -59,6 +58,11 @@ function AnimalPage() {
           flex: 1,
         },
         {
+          field: 'viewedDate',
+          headerName: 'Ngày duyệt',
+          flex: 1,
+        },
+        {
           field: 'status',
           headerName: 'Trạng thái',
           width: ICON_CELL_WIDTH + ICON_CELL_WIDTH / 2,
@@ -67,9 +71,12 @@ function AnimalPage() {
             return (
               <Box
                 sx={{
+                  width: '100%',
                   p: 1,
+
                   fontSize: 14,
                   fontWeight: 500,
+                  textAlign: 'center',
                   color: `${currentStatus.variant}.main`,
                   bgcolor: theme => alpha(theme.palette[currentStatus.variant].main, 0.1),
                   borderRadius: 3,
@@ -87,36 +94,41 @@ function AnimalPage() {
           align: 'center',
           sortable: false,
           renderCell: params => (
-            <MenuPopover path={toSpinalCase(`${params.row.name}-${params.row.id}`)} onDeleteClick={handleDeleteClick} />
+            <MenuPopover
+              path={toSpinalCase(`${params.row.name}-${params.row.id}`)}
+              state={{ isDisabled: isExpert }}
+              onDeleteClick={isExpert ? null : handleDeleteClick}
+            />
           ),
         },
       ],
-      rows: Array.isArray(animals)
-        ? [
-            ...animals?.map(animal => ({
-              id: animal.animal_ID,
-              name: animal.vietnameseName,
-              url: animal.images[0]?.url,
-              localName: animal.localName,
-              createDate: animal.postDate,
-              status: animal.status,
-            })),
-          ]
-        : [],
+      rows: [
+        ...animals?.map(animal => ({
+          id: animal.animal_ID,
+          name: animal.vietnameseName,
+          url: animal.images[0]?.url,
+          localName: animal.localName,
+          createDate: animal.postDate,
+          viewedDate: animal.viewedDate,
+          status: animal.status,
+        })),
+      ],
     }),
     [animals.length]
   );
 
   useEffect(() => {
-    const getAllAnimals = async user_ID => {
-      await dispatch(fetchAnimals(user_ID));
-    };
-    getAllAnimals(user.user_ID);
-  }, [animals.length, deleted]);
+    fetchAnimalsByUser(user.user_ID, user.role);
+  }, []);
+
+  const fetchAnimalsByUser = async (user_ID, role) => {
+    const response = await animalsApi.getAll(user_ID, role);
+    setAnimals(response);
+  };
 
   const handleDeleteClick = async animal_ID => {
-    await dispatch(removeAnimal(animal_ID));
-    setDeleted(prevState => prevState + 1);
+    await animalsApi.remove(animal_ID);
+    fetchAnimalsByUser(user.user_ID, user.role);
     window.alert('Xoá động vật thành công');
   };
 
@@ -124,15 +136,17 @@ function AnimalPage() {
     <Box>
       <Stack direction='row' justifyContent='space-between' alignItems='center'>
         <Heading text='Động vật' />
-        <Box sx={{ '& a': { display: 'block', width: '100%', height: '100%', borderRadius: '50%' } }}>
-          <CustomTooltip title='Thêm động vật'>
-            <Link to='add'>
-              <Button rounded='true' size='medium'>
-                <AddIcon sx={{ width: 32, height: 32 }} />
-              </Button>
-            </Link>
-          </CustomTooltip>
-        </Box>
+        {!isExpert && (
+          <Box sx={{ '& a': { display: 'block', width: '100%', height: '100%', borderRadius: '50%' } }}>
+            <CustomTooltip title='Thêm động vật'>
+              <Link to='add'>
+                <Button rounded='true' size='medium'>
+                  <AddIcon sx={{ width: 32, height: 32 }} />
+                </Button>
+              </Link>
+            </CustomTooltip>
+          </Box>
+        )}
       </Stack>
       <Box
         sx={{
@@ -142,11 +156,7 @@ function AnimalPage() {
           borderRadius: 2,
         }}
       >
-        <CustomDataGrid
-          columns={dataGrid.columns}
-          rows={dataGrid.rows}
-          loading={response.loading || animals.length === 0}
-        />
+        <CustomDataGrid columns={dataGrid.columns} rows={dataGrid.rows} loading={animals.length === 0} />
       </Box>
     </Box>
   );

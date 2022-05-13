@@ -4,7 +4,8 @@ module.exports = {
   getAll: async (req, res) => {
     try {
       const user_ID = req.query.user_ID;
-      const result = await getAll(user_ID);
+      const role = req.query.role;
+      const result = await getAll(user_ID, role);
       return res.status(200).json(result);
     } catch (e) {
       return res.status(500).json({

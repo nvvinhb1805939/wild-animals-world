@@ -14,12 +14,20 @@ const toLatinString = vietNameseString =>
     .replace(/\u02C6|\u0306|\u031B/g, '');
 
 module.exports = {
-  getAll: async (user_ID = '') => {
+  getAll: async (user_ID = '', role = '') => {
     const connection = await pool.getConnection();
-    const conditionQuery = user_ID ? `and user_ID = ${user_ID}` : '';
     try {
       await connection.beginTransaction();
-      const fetchAnimalResults = await connection.query(`select * from animals where visibility = 1 ${conditionQuery}`);
+
+      const fetchAllQuery = `select * from animals where visibility = 1 and status = 2`;
+      const fetchByUserIdQuery = `select * from animals where visibility = 1 and user_ID = ${user_ID} order by status`;
+      const fetchStatusQuery = `select * from animals where visibility = 1 order by status`;
+      let query = fetchAllQuery;
+
+      if (user_ID && role == 0) query = fetchByUserIdQuery;
+      else if (user_ID && role == 1) query = fetchStatusQuery;
+
+      const fetchAnimalResults = await connection.query(query);
       const [result] = fetchAnimalResults;
       for (let i in result) {
         const fetchAnimalImageResults = await connection.query(
@@ -61,10 +69,10 @@ module.exports = {
     const connection = await pool.getConnection();
     try {
       await connection.beginTransaction();
-      const date = new Date().toLocaleString();
-      console.log(date);
+
       const queryResult = await connection.query(
-        `insert into animals values(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, 0, ?, ?)`,
+        `insert into animals values(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+          , ?, ?, 1, 0, ?, ?, ?, ?, ?)`,
         [
           animals.sciencetificName,
           animals.vietnameseName,
@@ -84,10 +92,13 @@ module.exports = {
           animals.allocation,
           animals.templateStatus,
           animals.habitat,
-          date,
+          animals.postDate,
           animals.author,
           animals.rejectedReason,
           animals.user_ID,
+          animals.expert_ID,
+          animals.expertName,
+          animals.viewedDate,
         ]
       );
       const animal_ID = queryResult[0].insertId;
@@ -134,7 +145,12 @@ module.exports = {
         CITES = '${animals.CITES}',
         allocation = '${animals.allocation}',
         templateStatus = '${animals.templateStatus}',
-        habitat = '${animals.habitat}'
+        habitat = '${animals.habitat}',
+        status = '${animals.status}',
+        rejectedReason = '${animals.rejectedReason}',
+        expert_ID = '${animals.expert_ID}',
+        expertName = '${animals.expertName}',
+        viewedDate = '${animals.viewedDate}'
         where animal_ID = ${animals.animal_ID}`);
       // const animal_ID = animals.animal_ID;
       // const fetchResult = await connection.query(`SELECT * FROM images WHERE animal_ID = ${animal_ID}`);
