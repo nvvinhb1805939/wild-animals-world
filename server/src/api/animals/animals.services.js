@@ -102,21 +102,22 @@ module.exports = {
         ]
       );
       const animal_ID = queryResult[0].insertId;
-      for (let i in images) {
-        await connection.query(`insert into images (url, animal_ID) values(?,?)`, [images[i].filename, animal_ID]);
+      for (const image of images) {
+        await connection.query(`insert into images (url, animal_ID) values(?,?)`, [image.filename, animal_ID]);
       }
-      const fetchResult = await connection.query(`SELECT * FROM animals WHERE animal_ID = ?`, [
-        queryResult[0].insertId,
-      ]);
-      const animal_images = await connection.query(
-        `SELECT image_ID, CONCAT('${process.env.URL}', url) as url FROM images WHERE animal_ID = ?`,
-        [queryResult[0].insertId]
-      );
+      // const fetchResult = await connection.query(`SELECT * FROM animals WHERE animal_ID = ?`, [
+      //   queryResult[0].insertId,
+      // ]);
+      // const animal_images = await connection.query(
+      //   `SELECT image_ID, CONCAT('${process.env.URL}', url) as url FROM images WHERE animal_ID = ?`,
+      //   [queryResult[0].insertId]
+      // );
 
       await connection.commit();
-      const result = fetchResult[0][0];
-      result['images'] = animal_images[0];
-      return result;
+      // const result = fetchResult[0][0];
+      // result['images'] = animal_images[0];
+      // return result;
+      return { message: 'Thêm thông tin động vật thành công' };
     } catch (error) {
       return error;
     } finally {
@@ -127,7 +128,8 @@ module.exports = {
     const connection = await pool.getConnection();
     try {
       await connection.beginTransaction();
-      const queryResult = await connection.query(`update animals set 
+
+      await connection.query(`update animals set 
         sciencetificName = '${animals.sciencetificName}',
         vietnameseName = '${animals.vietnameseName}',
         localName = '${animals.localName}',
@@ -152,16 +154,32 @@ module.exports = {
         expertName = '${animals.expertName}',
         viewedDate = '${animals.viewedDate}'
         where animal_ID = ${animals.animal_ID}`);
-      // const animal_ID = animals.animal_ID;
-      // const fetchResult = await connection.query(`SELECT * FROM images WHERE animal_ID = ${animal_ID}`);
-      // for (let i in fetchResult[0]) {
-      //   await connection.query(
-      //     `update images set url = '${images[i].filename}' where image_ID = ${fetchResult[0][i].image_ID}`
-      //   );
-      // }
+
+      if (animals.deletedImages) {
+        for (const deletedImage of animals.deletedImages) {
+          await connection.query(`delete from images where image_ID = ${deletedImage}`);
+        }
+      }
+
+      for (const image of images) {
+        await connection.query(`insert into images (url, animal_ID) values(?,?)`, [image.filename, animals.animal_ID]);
+      }
+
       await connection.commit();
-      const result = fetchResult[0];
-      return result;
+
+      let message = '';
+      switch (animals.status) {
+        case '1':
+          message = 'Bạn đã từ chối yêu cầu duyệt động vật này';
+          break;
+        case '2':
+          message = 'Duyệt động vật thành công';
+          break;
+        default:
+          message = 'Cập nhật động vật thành công';
+      }
+
+      return { message };
     } catch (error) {
       return error;
     } finally {

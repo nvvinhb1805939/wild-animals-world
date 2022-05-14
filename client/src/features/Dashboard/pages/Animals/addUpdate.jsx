@@ -1,5 +1,17 @@
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-import { Box, Button, Grid, Input, InputLabel, Stack } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import {
+  Box,
+  Button,
+  Grid,
+  IconButton,
+  ImageList,
+  ImageListItem,
+  ImageListItemBar,
+  Input,
+  InputLabel,
+  Stack,
+} from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
@@ -44,8 +56,8 @@ function AddUpdateAnimal(props) {
     defaultValues,
   });
 
-  const imagesInputRef = useRef();
   const [selectedImages, setSelectedImages] = useState([]);
+  const [deletedImages, setDeletedImages] = useState([]);
 
   useEffect(() => {
     if (isAddMode) return;
@@ -53,35 +65,81 @@ function AddUpdateAnimal(props) {
       const [response] = await animalsApi.get(animal_ID);
       reset(response);
       const { images } = response;
-      setSelectedImages(images.map(image => image.url));
+      // setSelectedImages(images.map(image => image.url));
+      setSelectedImages(images);
     })(updatedAnimalID);
   }, [reset]);
 
   const handleImageChange = e => {
     if (e.target.files) {
-      const filesArray = Array.from(e.target.files).map(file => URL.createObjectURL(file));
+      const filesArray = Array.from(e.target.files).map(file => ({
+        image_ID: '',
+        url: URL.createObjectURL(file),
+        file,
+      }));
       setSelectedImages(prevImages => prevImages.concat(filesArray));
       Array.from(e.target.files).map(file => URL.revokeObjectURL(file));
     }
   };
 
+  const handleDeleteImage = index => {
+    const newImages = [...selectedImages];
+    const [deletedImage] = newImages.splice(index, 1);
+    if (deletedImage.image_ID) setDeletedImages([...deletedImages, deletedImage.image_ID]);
+    setSelectedImages(newImages);
+  };
+
   const renderPreviewPhotos = photos => {
     return photos.map((photo, index) => (
-      <Grid item lg={4} key={index} sx={{ '& img': { width: '100%', height: '100%' } }}>
-        <img src={photo} alt='img' />
-      </Grid>
+      <ImageListItem key={index} sx={{ '& img': { width: '100%', minHeight: 40 } }}>
+        <img src={photo.url} alt='img' />
+        {!isExpertMode && (
+          <CustomTooltip title='Xoá hình ảnh' placement='left'>
+            <ImageListItemBar
+              onClick={() => {
+                handleDeleteImage(index);
+              }}
+              sx={{
+                left: 'unset',
+                width: 'fit-content',
+                cursor: 'pointer',
+
+                '& .MuiImageListItemBar-titleWrap': {
+                  display: 'none',
+                },
+                '& .MuiIconButton-root': {
+                  color: 'foreground.main',
+                },
+                '&:hover .MuiIconButton-root': {
+                  color: 'error.main',
+                },
+              }}
+              position='top'
+              actionIcon={
+                <IconButton>
+                  <DeleteIcon />
+                </IconButton>
+              }
+            />
+          </CustomTooltip>
+        )}
+      </ImageListItem>
     ));
   };
 
   const handleOnSubmit = async data => {
     const formData = new FormData();
     const date = new Date(Date.now()).toLocaleString('en-GB');
+    const imageFileList = selectedImages.reduce((prevImageFileList, selectedImage) => {
+      if (selectedImage.hasOwnProperty('file')) return prevImageFileList.concat(selectedImage.file);
+      return prevImageFileList;
+    }, []);
 
     for (let key in data) {
-      formData.append(key, data[key]);
+      if (key !== 'images') formData.set(key, data[key]);
     }
-
     formData.set('status', status);
+
     if (isExpertMode) {
       formData.set('expert_ID', user.user_ID);
       formData.set('expertName', user.fullname);
@@ -90,21 +148,22 @@ function AddUpdateAnimal(props) {
       formData.set('postDate', date);
       formData.set('viewedDate', '');
       formData.set('rejectedReason', '');
+      imageFileList.forEach(imageFileItem => {
+        formData.append('images', imageFileItem);
+      });
+      deletedImages.forEach(deletedImage => {
+        formData.append('deletedImages[]', deletedImage);
+      });
     }
 
-    Array.from(imagesInputRef.current.files).forEach((file, index) => {
-      if (index === 0) formData.set('images', file);
-      else formData.append('images', file);
-    });
-
     if (isAddMode) {
-      await animalsApi.add(formData);
+      const response = await animalsApi.add(formData);
       reset();
       setSelectedImages([]);
-      window.alert('Thêm động vật thành công');
+      window.alert(response.message);
     } else {
-      await animalsApi.update(formData);
-      window.alert(state?.isDisabled ? 'Duyệt động vật thành công' : 'Cập nhật động vật thành công');
+      const response = await animalsApi.update(formData);
+      window.alert(response.message);
     }
   };
 
@@ -285,14 +344,25 @@ function AddUpdateAnimal(props) {
                   }}
                   sx={{ display: 'none' }}
                   onChange={handleImageChange}
-                  inputRef={imagesInputRef}
                 />
               )}
             />
           </Grid>
-          <Grid container item lg={12} spacing={3}>
-            {renderPreviewPhotos(selectedImages)}
-          </Grid>
+          {selectedImages.length > 0 && (
+            <Grid container item lg={12} spacing={3}>
+              <ImageList
+                cols={3}
+                gap={24}
+                sx={{
+                  ml: 3,
+                  mt: 3,
+                  width: '100%',
+                }}
+              >
+                {renderPreviewPhotos(selectedImages)}
+              </ImageList>
+            </Grid>
+          )}
           {!isExpertMode && getValues('status') === 1 && status !== 0 && (
             <Grid container item lg={12} spacing={3}>
               <Grid item lg>
