@@ -1,11 +1,10 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
+import { Avatar, Box, CircularProgress, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import animalsApi from '../../api/animalsApi';
-import toSpinalCase, { toLatinString } from '../../utils/spinalCase';
+import useDebouncedSearch from '../../hooks/useDebouncedSearch';
+import toSpinalCase from '../../utils/spinalCase';
 import SearchField from '../form-controls/SearchField';
 
 Search.propTypes = {
@@ -18,30 +17,7 @@ Search.defaultProps = {
 function Search({ isContainSearchList }) {
   const boxRef = useRef(null);
   const [isOpenSearchList, setIsOpenSearchList] = useState(false);
-
-  const [animals, setAnimals] = useState([]);
-  const [filter, setFilter] = useState([]);
-
-  useEffect(() => {
-    (async () => {
-      const response = await animalsApi.getAll();
-      setAnimals(response);
-    })();
-  }, []);
-
-  const handleSearchChange = searchParams => {
-    if (searchParams == '') setFilter([]);
-    else {
-      const newAnimals = animals.filter(item => toLatinString(item.vietnameseName).includes(searchParams));
-      setFilter(newAnimals);
-    }
-  };
-
-  const { control } = useForm({
-    defaultValues: {
-      animals: '',
-    },
-  });
+  const { inputText, setInputText, searchResults } = useDebouncedSearch();
 
   const handleSearchFocus = () => {
     if (!isContainSearchList) return;
@@ -65,11 +41,12 @@ function Search({ isContainSearchList }) {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [boxRef]);
+  console.log(searchResults.loading, searchResults.result);
 
   return (
     <Box sx={{ position: 'relative' }} ref={boxRef}>
       <form onSubmit={e => e.preventDefault()}>
-        <SearchField name='animals' onSearchFocus={handleSearchFocus} onSearchChange={handleSearchChange} />
+        <SearchField name='animals' value={inputText} onSearchFocus={handleSearchFocus} onSearchChange={setInputText} />
       </form>
       {isOpenSearchList && (
         <List
@@ -79,7 +56,9 @@ function Search({ isContainSearchList }) {
             width: '100%',
             py: 4,
             px: 2,
+
             minHeight: 200,
+            maxHeight: 500,
 
             display: 'flex',
             flexDirection: 'column',
@@ -89,13 +68,27 @@ function Search({ isContainSearchList }) {
             boxShadow: '0 0 2px 2px rgba(0, 0, 0, 0.15)',
             borderBottomLeftRadius: 5,
             borderBottomRightRadius: 5,
+            overflowY: 'auto',
 
             '& a:hover': {
               color: 'primary.main',
             },
           }}
         >
-          {filter.length == 0 ? (
+          {searchResults.loading && (
+            <ListItem
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: 'fit-content',
+              }}
+            >
+              <CircularProgress />
+            </ListItem>
+          )}
+          {searchResults.result?.length == 0 ? (
             <ListItem sx={{ flexDirection: 'column', alignItems: 'center' }}>
               <ListItemAvatar sx={{ minWidth: 'unset' }}>
                 <Avatar>
@@ -105,13 +98,17 @@ function Search({ isContainSearchList }) {
               <ListItemText primary='Không có gì để hiển thị' />
             </ListItem>
           ) : (
-            filter.map(item => (
-              <Link to={`${toSpinalCase(item.vietnameseName + '-' + item.animal_ID)}`} onClick={handleClose}>
-                <ListItem key={item.animal_ID} sx={{ gap: 1 }}>
+            searchResults.result?.map(animal => (
+              <Link
+                key={animal.animal_ID}
+                to={`${toSpinalCase(animal.vietnameseName + '-' + animal.animal_ID)}`}
+                onClick={handleClose}
+              >
+                <ListItem key={animal.animal_ID} sx={{ gap: 1 }}>
                   <ListItemAvatar sx={{ minWidth: 'unset' }}>
-                    <Avatar src={item.images[0].url} />
+                    <Avatar src={animal.images[0].url} />
                   </ListItemAvatar>
-                  <ListItemText primary={item.vietnameseName} />
+                  <ListItemText primary={animal.vietnameseName} />
                 </ListItem>
               </Link>
             ))

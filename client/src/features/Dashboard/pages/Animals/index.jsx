@@ -127,9 +127,9 @@ function AnimalPage() {
   };
 
   const handleDeleteClick = async animal_ID => {
-    await animalsApi.remove(animal_ID);
+    const response = await animalsApi.remove(animal_ID);
     fetchAnimalsByUser(user.user_ID, user.role);
-    window.alert('Xoá động vật thành công');
+    window.alert(response.message);
   };
 
   return (

@@ -190,9 +190,9 @@ module.exports = {
     const connection = await pool.getConnection();
     try {
       await connection.beginTransaction();
-      const result = await connection.query(`update animals set visibility = 0 where animal_ID = ${animal_ID}`);
+      await connection.query(`update animals set visibility = 0 where animal_ID = ${animal_ID}`);
       await connection.commit();
-      return result;
+      return { message: 'Xoá động vật thành công' };
     } catch (error) {
       return error;
     } finally {
@@ -203,8 +203,7 @@ module.exports = {
     const connection = await pool.getConnection();
     try {
       await connection.beginTransaction();
-      const fetchAnimalResults = await connection.query(`select * from animals where visibility = 1`);
-      const [result] = fetchAnimalResults;
+      const [result] = await connection.query(`select * from animals where visibility = 1 and status = 2`);
       const animals = result.filter(item => toLatinString(item.vietnameseName).includes(vietnameseName));
 
       for (let i in animals) {
@@ -221,30 +220,4 @@ module.exports = {
       connection.release();
     }
   },
-  // search: async vietnameseName => {
-  //   const connection = await pool.getConnection();
-  //   try {
-  //     await connection.beginTransaction();
-  //     const resultQuery = await connection.query(`select vietnameseName from animals`);
-  //     const arrAnimals = [];
-  //     for (let i = 0; i < resultQuery[0].length; i++) {
-  //       if (resultQuery[0][i].vietnameseName.search(vietnameseName) != -1) {
-  //         arrAnimals.push(resultQuery[0][i]);
-  //       }
-  //     }
-  //     const arrAnimal_ID = [];
-  //     for (let i = 0; i < arrAnimals.length; i++) {
-  //       const result = await connection.query(
-  //         `select * from animals where visibility = 1 and vietnameseName = '${arrAnimals[i].vietnameseName}'`
-  //       );
-  //       arrAnimal_ID.push(result[0][0]);
-  //     }
-  //     await connection.commit();
-  //     return arrAnimal_ID;
-  //   } catch (error) {
-  //     return error;
-  //   } finally {
-  //     connection.release();
-  //   }
-  // },
 };

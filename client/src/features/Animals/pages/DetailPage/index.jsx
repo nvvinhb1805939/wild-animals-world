@@ -22,7 +22,7 @@ function DetailPage() {
       const [response] = await animalsApi.get(animal_ID);
       setAnimal(response);
     })(animal_ID);
-  }, []);
+  }, [animal_ID]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
