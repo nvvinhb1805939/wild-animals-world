@@ -7,17 +7,15 @@ InputField.propTypes = {
   control: PropTypes.object.isRequired,
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  required: PropTypes.bool,
   disabled: PropTypes.bool,
   autoSize: PropTypes.bool,
 };
 InputField.defaultProps = {
-  required: false,
   disabled: false,
   autoSize: false,
 };
 
-function InputField({ control, name, label, required, disabled, autoSize }) {
+function InputField({ control, name, label, disabled, autoSize }) {
   const textareaProps = autoSize
     ? {
         multiline: true,
@@ -29,15 +27,17 @@ function InputField({ control, name, label, required, disabled, autoSize }) {
     <Controller
       control={control}
       name={name}
-      render={({ field: { onChange, value } }) => (
+      render={({ field: { onChange, onBlur, value }, formState: { errors } }) => (
         <TextField
           id={name}
           name={name}
           label={label}
           onChange={event => onChange(event.target.value)}
+          onBlur={onBlur}
           value={value}
-          required={required}
           disabled={disabled}
+          error={!!errors[name]}
+          helperText={errors[name]?.message}
           size='small'
           fullWidth
           {...textareaProps}

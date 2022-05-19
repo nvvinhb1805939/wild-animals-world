@@ -1,5 +1,7 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { FormHelperText } from '@mui/material';
 import {
   Box,
   Button,
@@ -12,10 +14,11 @@ import {
   InputLabel,
   Stack,
 } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
+import * as yup from 'yup';
 import animalsApi from '../../../../api/animalsApi';
 import CustomTooltip from '../../../../components/CustomTooltip';
 import InputField from '../../../../components/form-controls/InputField';
@@ -49,11 +52,99 @@ function AddUpdateAnimal(props) {
     allocation: '',
     templateStatus: '',
     habitat: '',
-    author: user.fullname,
-    user_ID: user.user_ID,
+    author: '',
+    postDate: '',
+    viewedDate: '',
+    rejectedReason: '',
   };
+  const schema = yup.object().shape({
+    sciencetificName: yup
+      .string()
+      .trim()
+      .required('Thông tin này không được để trống')
+      .max(200, 'Thông tin này chứa tối đa 200 ký tự'),
+    vietnameseName: yup
+      .string()
+      .trim()
+      .required('Thông tin này không được để trống')
+      .max(100, 'Thông tin này chứa tối đa 100 ký tự'),
+    localName: yup
+      .string()
+      .trim()
+      .required('Thông tin này không được để trống')
+      .max(100, 'Thông tin này chứa tối đa 100 ký tự'),
+    regnum: yup
+      .string()
+      .trim()
+      .required('Thông tin này không được để trống')
+      .max(50, 'Thông tin này chứa tối đa 50 ký tự'),
+    phylum: yup
+      .string()
+      .trim()
+      .required('Thông tin này không được để trống')
+      .max(100, 'Thông tin này chứa tối đa 100 ký tự'),
+    animalClass: yup
+      .string()
+      .trim()
+      .required('Thông tin này không được để trống')
+      .max(100, 'Thông tin này chứa tối đa 100 ký tự'),
+    ordo: yup
+      .string()
+      .trim()
+      .required('Thông tin này không được để trống')
+      .max(100, 'Thông tin này chứa tối đa 100 ký tự'),
+    familia: yup
+      .string()
+      .trim()
+      .required('Thông tin này không được để trống')
+      .max(100, 'Thông tin này chứa tối đa 100 ký tự'),
+    morphological: yup.string().trim().required('Thông tin này không được để trống'),
+    ecological: yup.string().trim().required('Thông tin này không được để trống'),
+    usageValue: yup
+      .string()
+      .trim()
+      .required('Thông tin này không được để trống')
+      .max(200, 'Thông tin này chứa tối đa 200 ký tự'),
+    IUCN: yup
+      .string()
+      .trim()
+      .required('Thông tin này không được để trống')
+      .max(100, 'Thông tin này chứa tối đa 100 ký tự'),
+    redBook: yup
+      .string()
+      .trim()
+      .required('Thông tin này không được để trống')
+      .max(100, 'Thông tin này chứa tối đa 100 ký tự'),
+    goverment: yup
+      .string()
+      .trim()
+      .required('Thông tin này không được để trống')
+      .max(100, 'Thông tin này chứa tối đa 100 ký tự'),
+    CITES: yup
+      .string()
+      .trim()
+      .required('Thông tin này không được để trống')
+      .max(100, 'Thông tin này chứa tối đa 100 ký tự'),
+    allocation: yup
+      .string()
+      .trim()
+      .required('Thông tin này không được để trống')
+      .max(100, 'Thông tin này chứa tối đa 100 ký tự'),
+    templateStatus: yup
+      .string()
+      .trim()
+      .required('Thông tin này không được để trống')
+      .max(100, 'Thông tin này chứa tối đa 100 ký tự'),
+    habitat: yup
+      .string()
+      .trim()
+      .required('Thông tin này không được để trống')
+      .max(100, 'Thông tin này chứa tối đa 100 ký tự'),
+  });
   const { formState, reset, handleSubmit, control, getValues } = useForm({
+    mode: 'onBlur',
     defaultValues,
+    resolver: yupResolver(schema),
   });
 
   const [selectedImages, setSelectedImages] = useState([]);
@@ -136,7 +227,7 @@ function AddUpdateAnimal(props) {
     }, []);
 
     for (let key in data) {
-      if (key !== 'images') formData.set(key, data[key]);
+      formData.set(key, data[key]);
     }
     formData.set('status', status);
 
@@ -145,6 +236,8 @@ function AddUpdateAnimal(props) {
       formData.set('expertName', user.fullname);
       formData.set('viewedDate', date);
     } else {
+      formData.set('user_ID', user.user_ID);
+      formData.set('author', user.fullname);
       formData.set('postDate', date);
       formData.set('viewedDate', '');
       formData.set('rejectedReason', '');
@@ -155,7 +248,6 @@ function AddUpdateAnimal(props) {
         formData.append('deletedImages[]', deletedImage);
       });
     }
-
     if (isAddMode) {
       const response = await animalsApi.add(formData);
       reset();
@@ -288,14 +380,6 @@ function AddUpdateAnimal(props) {
               <InputField disabled={state?.isDisabled} control={control} name='templateStatus' label='Tình trạng mẫu' />
             </Grid>
           </Grid>
-          <Grid container item lg={12} spacing={3} sx={{ display: ' none' }}>
-            <Grid item lg={6}>
-              <InputField disabled={state?.isDisabled} control={control} name='author' label='Tác giả' />
-            </Grid>
-            <Grid item lg={6}>
-              <InputField disabled={state?.isDisabled} control={control} name='user_ID' label='User ID' />
-            </Grid>
-          </Grid>
           {!!getValues('status') && status !== 0 && !isExpertMode && (
             <Grid container item lg={12} spacing={3}>
               <Grid item lg={6}>
@@ -316,7 +400,7 @@ function AddUpdateAnimal(props) {
               </Grid>
             </Grid>
           )}
-          <Grid container item lg={4}>
+          <Grid container item lg direction='column' sx={{ gap: 1.5 }}>
             <CustomTooltip title={state?.isDisabled ? '' : 'Thêm ảnh'} placement='right'>
               <InputLabel
                 htmlFor={state?.isDisabled ? null : 'images'}
@@ -330,23 +414,20 @@ function AddUpdateAnimal(props) {
                 </Button>
               </InputLabel>
             </CustomTooltip>
-            <Controller
-              control={control}
+            <Input
+              id='images'
               name='images'
-              render={({ field }) => (
-                <Input
-                  id='images'
-                  name='images'
-                  type='file'
-                  inputProps={{
-                    multiple: true,
-                    accept: 'image/*',
-                  }}
-                  sx={{ display: 'none' }}
-                  onChange={handleImageChange}
-                />
-              )}
+              type='file'
+              inputProps={{
+                multiple: true,
+                accept: 'image/*',
+              }}
+              sx={{ display: 'none' }}
+              onChange={handleImageChange}
             />
+            {formState.errors?.images && (
+              <FormHelperText error={!!formState.errors?.images}>{formState.errors?.images.message}</FormHelperText>
+            )}
           </Grid>
           {selectedImages.length > 0 && (
             <Grid container item lg={12} spacing={3}>
@@ -389,7 +470,7 @@ function AddUpdateAnimal(props) {
                 type='submit'
                 fullWidth
                 variant='contained'
-                disabled={isExpertMode && (formState.isSubmitted || getValues('status') !== 0)}
+                disabled={isExpertMode && (formState.isSubmitSuccessful || getValues('status') !== 0)}
                 onClick={() => setStatus(isExpertMode ? 2 : 0)}
               >
                 {isExpertMode ? 'Duyệt' : 'Lưu'}
@@ -402,7 +483,7 @@ function AddUpdateAnimal(props) {
                   color='error'
                   fullWidth
                   variant='contained'
-                  disabled={formState.isSubmitted || getValues('status') !== 0}
+                  disabled={formState.isSubmitSuccessful || getValues('status') !== 0}
                   onClick={() => setStatus(1)}
                 >
                   Từ chối

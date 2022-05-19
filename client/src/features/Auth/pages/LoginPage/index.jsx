@@ -26,9 +26,12 @@ function LoginPage() {
     const response = await dispatch(login(data));
     const userData = unwrapResult(response);
     const hasData = !!userData?.user_ID;
-
-    setIsLoginSuccess(hasData);
-    localStorage.setItem('loginStatus', JSON.stringify(hasData));
+    if (hasData) {
+      setIsLoginSuccess(hasData);
+      localStorage.setItem('loginStatus', JSON.stringify(hasData));
+    } else {
+      alert(userData.message);
+    }
   };
 
   return (

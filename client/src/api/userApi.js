@@ -5,6 +5,10 @@ const userApi = {
     const url = '/login';
     return axiosClient.post(url, data);
   },
+  getAll() {
+    const url = '/getAll';
+    return axiosClient.get(url);
+  },
 };
 
 export default userApi;

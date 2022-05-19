@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Container, Grid, Typography } from '@mui/material';
+import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useForm } from 'react-hook-form';

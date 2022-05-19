@@ -41,7 +41,6 @@ function Search({ isContainSearchList }) {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [boxRef]);
-  console.log(searchResults.loading, searchResults.result);
 
   return (
     <Box sx={{ position: 'relative' }} ref={boxRef}>

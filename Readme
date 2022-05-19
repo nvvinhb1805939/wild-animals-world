@@ -5,15 +5,16 @@ https://kbroman.org/github_tutorial/pages/fork.html
 1. Change redux to local state ------------X
 2. Authorization -------------X
 3. Update images feature --------------X
-4. Search feature (includes debounce or throttle) --------------------
-5. Validation
-6. Use GG maps
-7. Create skeleton
-8. Review and optimize code
-9. Create notification
-10. Protected route
-11. Lazy loading
-12. Change alert to toast notification
-13. Handle MainPage call api twice
+4. Search feature (includes debounce or throttle) ------------------X
+5. Validation--------------
+6. Create skeleton -------------------
+7. Review and optimize code
+8. Create notification
+9. Protected route
+10. Lazy loading
+11. Change alert to toast notification
+12. Handle MainPage call api twice
+13. Use GG maps
+14. Animation for event
 
 #

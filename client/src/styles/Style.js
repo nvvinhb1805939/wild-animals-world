@@ -159,6 +159,11 @@ const theme = createTheme({
         },
       },
     },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: { marginLeft: 0 },
+      },
+    },
   },
   shadows: [vars.primaryShadow, ...shadows.slice(1)],
 });

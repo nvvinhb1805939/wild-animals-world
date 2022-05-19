@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { login } = require('./login.controller');
+const { login, getAll } = require('./login.controller');
 
 router.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');

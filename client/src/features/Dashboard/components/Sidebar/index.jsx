@@ -1,5 +1,3 @@
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import { alpha, Box, Drawer, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -36,65 +34,55 @@ function Sidebar({ isOpen }) {
         <Logo />
       </Box>
       <List sx={{ mx: 1 }}>
-        <Box
-          sx={{
-            '.active .MuiListItemButton-root': {
-              fontWeight: 500,
-              color: 'primary.main',
-              bgcolor: theme => alpha(theme.palette.primary.main, 0.1),
-            },
-          }}
-        >
-          <NavLink className='sidebar__nav-link' to={`${userData.userName}-${userData.user_ID}`} end>
-            <ListItemButton sx={{ gap: 2, borderRadius: '10px' }}>
-              <ListItemIcon sx={{ color: 'inherit' }}>
-                <DashboardIcon />
-              </ListItemIcon>
-              <ListItemText primary='Dashboard' sx={{ '& > span': { fontWeight: 'inherit' } }} />
-            </ListItemButton>
-          </NavLink>
-        </Box>
-        <Box
-          sx={{
-            '.active .MuiListItemButton-root': {
-              fontWeight: 500,
-              color: 'primary.main',
-              bgcolor: theme => alpha(theme.palette.primary.main, 0.1),
-            },
-          }}
-        >
-          <NavLink className='sidebar__nav-link' to={`${userData.userName}-${userData.user_ID}/account`} end>
-            <ListItemButton sx={{ gap: 2, borderRadius: '10px' }}>
-              <ListItemIcon sx={{ color: 'inherit' }}>
-                <AccountCircleIcon />
-              </ListItemIcon>
-              <ListItemText primary='Tài khoản' sx={{ '& > span': { fontWeight: 'inherit' } }} />
-            </ListItemButton>
-          </NavLink>
-        </Box>
-        <Box
-          sx={{
-            '.active .MuiListItemButton-root': {
-              fontWeight: 500,
-              color: 'primary.main',
-              bgcolor: theme => alpha(theme.palette.primary.main, 0.1),
-            },
-          }}
-        >
-          <NavLink className='sidebar__nav-link' to={`${userData.userName}-${userData.user_ID}/animals`}>
-            <ListItemButton
-              sx={{
-                gap: 2,
-                borderRadius: '10px',
-              }}
-            >
-              <ListItemIcon sx={{ color: 'inherit' }}>
-                <ViewListIcon />
-              </ListItemIcon>
-              <ListItemText primary='Động vật' sx={{ '& > span': { fontWeight: 'inherit' } }} />
-            </ListItemButton>
-          </NavLink>
-        </Box>
+        {userData.role == 2 ? (
+          <Box
+            sx={{
+              '.active .MuiListItemButton-root': {
+                fontWeight: 500,
+                color: 'primary.main',
+                bgcolor: theme => alpha(theme.palette.primary.main, 0.1),
+              },
+            }}
+          >
+            <NavLink to={`${userData.userName}-${userData.user_ID}/account`}>
+              <ListItemButton
+                sx={{
+                  gap: 2,
+                  borderRadius: '10px',
+                }}
+              >
+                <ListItemIcon sx={{ color: 'inherit' }}>
+                  <ViewListIcon />
+                </ListItemIcon>
+                <ListItemText primary='Tài khoản' sx={{ '& > span': { fontWeight: 'inherit' } }} />
+              </ListItemButton>
+            </NavLink>
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              '.active .MuiListItemButton-root': {
+                fontWeight: 500,
+                color: 'primary.main',
+                bgcolor: theme => alpha(theme.palette.primary.main, 0.1),
+              },
+            }}
+          >
+            <NavLink to={`${userData.userName}-${userData.user_ID}/animals`}>
+              <ListItemButton
+                sx={{
+                  gap: 2,
+                  borderRadius: '10px',
+                }}
+              >
+                <ListItemIcon sx={{ color: 'inherit' }}>
+                  <ViewListIcon />
+                </ListItemIcon>
+                <ListItemText primary='Động vật' sx={{ '& > span': { fontWeight: 'inherit' } }} />
+              </ListItemButton>
+            </NavLink>
+          </Box>
+        )}
       </List>
     </Drawer>
   );

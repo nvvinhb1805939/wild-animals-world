@@ -19,9 +19,9 @@ module.exports = {
     try {
       await connection.beginTransaction();
 
-      const fetchAllQuery = `select * from animals where visibility = 1 and status = 2`;
-      const fetchByUserIdQuery = `select * from animals where visibility = 1 and user_ID = ${user_ID} order by status`;
-      const fetchStatusQuery = `select * from animals where visibility = 1 order by status`;
+      const fetchAllQuery = `select * from animals where visibility = 1 and status = 2 order by viewedDate desc`;
+      const fetchByUserIdQuery = `select * from animals where visibility = 1 and user_ID = ${user_ID} order by status, viewedDate desc`;
+      const fetchStatusQuery = `select * from animals where visibility = 1 order by status, viewedDate desc`;
       let query = fetchAllQuery;
 
       if (user_ID && role == 0) query = fetchByUserIdQuery;

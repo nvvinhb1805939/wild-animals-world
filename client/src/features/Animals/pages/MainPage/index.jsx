@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import animalsApi from '../../../../api/animalsApi';
 import Hero from '../../../../components/Hero';
 import AnimalsList from '../../components/AnimalsList';
+import { LoadingContext } from '../../../../App';
 
 function MainPage(props) {
   const [animals, setAnimals] = useState([]);
+  const { loading, setLoading } = useContext(LoadingContext);
 
   useEffect(() => {
     (async () => {
       const response = await animalsApi.getAll();
       setAnimals(response);
+      setLoading(false);
     })();
   }, []);
 
@@ -17,8 +20,6 @@ function MainPage(props) {
     <>
       <Hero />
       <main>
-        {/* <Slider images={IMAGES} paddingY={4} />
-      <AlphaSearch /> */}
         <AnimalsList data={animals} />
       </main>
     </>
